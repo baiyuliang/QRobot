@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#EFEFEF">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/common_title_layout" />
+
+    <com.byl.qrobot.view.DropdownListView
+        android:id="@+id/message_chat_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom"
+        android:layout_below="@id/title_bar"
+        android:cacheColorHint="@color/transparent"
+        android:divider="@null"
+        android:listSelector="@color/transparent"
+        android:transcriptMode="normal" />
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#D0D0D0" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#F5F6F7">
+
+            <ImageView
+                android:id="@+id/image_add"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dip"
+                android:src="@drawable/btn_chat_add_selector" />
+
+            <ImageView
+                android:id="@+id/image_face"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/image_add"
+                android:src="@drawable/btn_chat_emo_selector" />
+
+            <EditText
+                android:id="@+id/input_sms"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dip"
+                android:layout_toLeftOf="@+id/send_sms"
+                android:layout_toRightOf="@id/image_face"
+                android:background="@null"
+                android:maxLength="240"
+                android:padding="2dip"
+                android:textColor="#333333"
+                android:singleLine="true"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/send_sms"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/btn_login_selector"
+                android:gravity="center"
+                android:text="发 送"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#D0D0D0" />
+
+        <include
+            android:id="@+id/chat_face_container"
+            layout="@layout/chat_face_container"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/chat_add_container"
+            layout="@layout/chat_add_container"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

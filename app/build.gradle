@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    //配置签名文件路径和密码，这样debug版就直接用的正式签名而不是默认debug签名
+    signingConfigs {
+        release {
+            //供测试
+            //SHA1>>E7:B5:47:9A:25:86:D0:6D:D5:2B:3C:31:C6:BF:00:FA:B8:B9:BF:39
+            //md5>>A7:52:FE:20:08:7B:92:A9:64:9B:8D:74:5E:12:49:D3
+            //a752fe20087b92a9649b8d745e1249d3
+            storeFile file("keystore.jks")
+            storePassword "123456"
+            keyAlias "byl"
+            keyPassword "123456"
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.byl.qrobot"
+        minSdkVersion 14
+        targetSdkVersion 22
+    }
+    buildTypes {
+        debug {//debug版
+            minifyEnabled false //打包时混淆
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/imageloader.jar')
+    compile 'com.android.support:support-v4:23.3.0'
+    compile files('libs/afinal_0.5.1_bin.jar')
+    compile files('libs/jsoup-1.8.1.jar')
+    compile files('libs/gesture-imageview.jar')
+}

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dip">
+
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="09-25 12:00"
+        android:textColor="#999999"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chat_time"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:id="@+id/chart_from_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@color/transparent"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <com.byl.qrobot.view.CircleImageView
+                android:id="@+id/chatfrom_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/miniq_logo" />
+
+            <TextView
+                android:id="@+id/chatfrom_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/chatfrom_bg"
+                android:gravity="center_vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/chatfrom_img"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/chatfrom_bg"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/chatfrom_location"
+                android:layout_width="200dp"
+                android:layout_height="120dp"
+                android:background="@drawable/chatfrom_bg"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/location_default"
+                android:text="河南省郑州市金水区南阳路"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progress_load"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/chart_to_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@color/transparent">
+
+            <com.byl.qrobot.view.CircleImageView
+                android:id="@+id/chatto_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/head_default" />
+
+            <TextView
+                android:id="@+id/chatto_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_toLeftOf="@+id/chatto_icon"
+                android:background="@drawable/chatto_bg"
+                android:gravity="center_vertical"
+                android:paddingBottom="3dp"
+                android:paddingRight="13dp"
+                android:paddingTop="3dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/chatto_img"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_toLeftOf="@+id/chatto_icon"
+                android:background="@drawable/chatto_bg"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/chatto_location"
+                android:layout_width="200dp"
+                android:layout_height="120dp"
+                android:layout_toLeftOf="@+id/chatto_icon"
+                android:background="@drawable/chatto_bg"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/location_default"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="common_title_bg">#11B6F5</color>
+    <color name="welcome_bg">#1CCDBD</color>
+    <color name="common_ui_bg">#F0F0F0</color>
+    <color name="common_ui_bg_white">#FFFFFF</color>
+    <color name="common_text_color">#333333</color>
+    <color name="common_text_big_title">#8A8A8A</color>
+
+    <drawable name="text_nor">#1298FF</drawable>
+    <drawable name="text_press">#999999</drawable>
+
+    <color name="bocop_dialog_bg">#30000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="hint">#bbbbbb</color>
+    <color name="line">#eeeeee</color>
+
+    <!-- 底部导航栏 -->
+    <color name="tabmian_bottom">#FFFFFF</color>
+    <color name="tab_text_normal">#666666</color>
+    <color name="tab_text_pressed">#3290FB</color>
+    <color name="settings_item_divider_color">#D5D5D5</color>
+    <color name="item_back_press">#F5F5F5</color>
+    <!-- alertdialog -->
+    <color name="alertdialog_line">#c6c6c6</color>
+    <color name="actionsheet_blue">#037BFF</color>
+    <color name="actionsheet_red">#FD4A2E</color>
+    <color name="actionsheet_gray">#8F8F8F</color>
+    <color name="text_press">#ABFEFF</color>
+    <color name="text_press2">#CCCCCC</color>
+    <color name="black_p50">#7f000000</color>
+    <color name="province_line_border">#999999</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+</resources>

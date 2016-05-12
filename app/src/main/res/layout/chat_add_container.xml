@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="190dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="4" >
+
+        <TextView
+            android:id="@+id/tv_weather"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/ic_weather"
+            android:gravity="center"
+            android:text="天气"
+            android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/tv_xingzuo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/ic_xingzuo"
+            android:gravity="center"
+            android:text="星座"
+            android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/tv_joke"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/ic_joke"
+            android:gravity="center"
+            android:text="笑话"
+            android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/tv_loc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/ic_location"
+            android:gravity="center"
+            android:text="位置"
+            android:textColor="#333333" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="4" >
+
+        <TextView
+            android:id="@+id/tv_gg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/ic_gg"
+            android:gravity="center"
+            android:text="帅哥"
+            android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/tv_mm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/ic_mm"
+            android:gravity="center"
+            android:text="美女"
+            android:textColor="#333333" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
