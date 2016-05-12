@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="GitHub：http://blog.csdn.net/baiyuliang2013"
+                    android:text="GitHub：https://github.com/baiyuliang/QRobot"
                     android:textColor="#333333"
                     android:textSize="16sp" />
             </LinearLayout>
