@@ -51,7 +51,7 @@ public class Tab3Activity extends BaseActivity {
 //                ToastUtil.showToast(this,"消息提醒");
                 break;
             case R.id.rl_setting:
-                ToastUtil.showToast(this,"设置");
+                SysUtils.startActivity(getParent(),SettingActivity.class);
                 break;
             case R.id.rl_about:
                 SysUtils.startActivity(getParent(),AboutActivity.class);

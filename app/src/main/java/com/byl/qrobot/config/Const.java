@@ -81,6 +81,7 @@ public class Const {
     public static final String MSG_TYPE_IMG="msg_type_img";//图片
     public static final String MSG_TYPE_VOICE="msg_type_voice";//语音
     public static final String MSG_TYPE_LOCATION="msg_type_location";//位置
+    public static final String MSG_TYPE_MUSIC="msg_type_music";//音乐
 
     //机器人api，注意key为本人所有，使用时请到图灵机器人官网注册http://www.tuling123.com
     public static final String ROBOT_URL="http://www.tuling123.com/openapi/api?key=8c9e460d261588a152d99853df80fcfd&info=";

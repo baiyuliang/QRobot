@@ -23,12 +23,14 @@ import com.byl.qrobot.bean.InfoItem;
 import com.byl.qrobot.config.Const;
 import com.byl.qrobot.util.PraseUtil;
 import com.byl.qrobot.util.StringUtil;
+import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.URLUtil;
 import com.byl.qrobot.ui.base.BaseActivity;
 import com.byl.qrobot.util.LogUtil;
 import com.byl.qrobot.util.ToastUtil;
 import com.byl.qrobot.view.CirclePageIndicator;
 import com.byl.qrobot.view.HomeViewPaper;
+import com.byl.qrobot.view.MyScrollView;
 
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
@@ -41,11 +43,13 @@ import java.util.TimerTask;
 /**
  * 主程序
  */
-public class Tab1Activity extends BaseActivity {
+public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollChangeListener {
 
     LinearLayout ll_news, ll_loadmore;
     TextView tv_loadmore;
     ProgressBar pb_loadmore;
+    MyScrollView myScrollView;
+    ImageView iv_refresh, iv_up;
 
     CirclePageIndicator indicator;
     private List<View> imageViews; // 滑动的图片集合
@@ -97,16 +101,41 @@ public class Tab1Activity extends BaseActivity {
         tv_loadmore = (TextView) findViewById(R.id.tv_loadmore);
         pb_loadmore = (ProgressBar) findViewById(R.id.pb_loadmore);
         ll_loadmore.setOnClickListener(this);
+
+        myScrollView = (MyScrollView) findViewById(R.id.myScrollView);
+        SysUtils.setOverScrollMode(myScrollView);
+        myScrollView.setOnScrollChangeListener(this);
+        iv_refresh = (ImageView) findViewById(R.id.iv_refresh);//刷新
+        iv_up = (ImageView) findViewById(R.id.iv_up);//上滑
+        iv_refresh.setOnClickListener(this);
+        iv_up.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.ll_loadmore:
-                if (pb_loadmore.getVisibility()!= View.VISIBLE) {//如果正在加载更多则不执行
+                if (pb_loadmore.getVisibility() != View.VISIBLE) {//如果正在加载更多则不执行
                     getNews(Const.TYPE_MOBILE, true);
                 }
                 break;
+            case R.id.iv_refresh:
+                getNews(Const.TYPE_MOBILE, false);
+                break;
+            case R.id.iv_up:
+                myScrollView.smoothScrollTo(0,0);
+                break;
+        }
+    }
+
+    @Override
+    public void onScrollChanged(int l, int t, int oldl, int oldt) {
+        if (t < 600) {
+            iv_refresh.setVisibility(View.VISIBLE);
+            iv_up.setVisibility(View.GONE);
+        } else {
+            iv_refresh.setVisibility(View.GONE);
+            iv_up.setVisibility(View.VISIBLE);
         }
     }
 
@@ -180,17 +209,13 @@ public class Tab1Activity extends BaseActivity {
      */
     private void getNews(int infoType, final boolean isLoadMore) {
         LogUtil.e("url>>" + URLUtil.getUrl(infoType, page));
+        if (!isLoadMore) {
+            page=1;
+            pb.setVisibility(View.VISIBLE);//显示标题栏处的progress
+        } else {
+            loadMoreStart();
+        }
         fh.get(URLUtil.getUrl(infoType, page++), new AjaxCallBack<Object>() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                if (!isLoadMore) {
-                    pb.setVisibility(View.VISIBLE);//显示标题栏处的progress
-                }else{
-                    loadMoreStart();
-                }
-            }
-
             @Override
             public void onSuccess(Object o) {
                 super.onSuccess(o);

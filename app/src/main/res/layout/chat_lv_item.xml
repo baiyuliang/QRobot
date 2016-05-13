@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#F0F0F0"
     android:orientation="vertical"
     android:padding="10dip">
 
@@ -48,7 +49,8 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="5dp"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/chatfrom_img"
@@ -78,6 +80,59 @@
                 android:text="河南省郑州市金水区南阳路"
                 android:visibility="gone" />
 
+            <LinearLayout
+                android:id="@+id/ll_music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chatfrom_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#DDDDDD"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/iv_music"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_music" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_music"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:visibility="gone"
+                        android:indeterminateDrawable="@drawable/music_playing" />
+
+                    <TextView
+                        android:id="@+id/tv_song_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="20dp"
+                        android:text="上海滩"
+                        android:textColor="#333333"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_song_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="52dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="20dp"
+                        android:text="刘德华"
+                        android:textColor="#666666"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
             <ProgressBar
                 android:id="@+id/progress_load"
                 android:layout_width="15dp"
@@ -92,7 +147,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@color/transparent">
+            android:background="@color/transparent"
+            android:visibility="gone">
 
             <com.byl.qrobot.view.CircleImageView
                 android:id="@+id/chatto_icon"

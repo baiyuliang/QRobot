@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -36,6 +37,7 @@ import com.byl.qrobot.adapter.ChatAdapter;
 import com.byl.qrobot.adapter.FaceVPAdapter;
 import com.byl.qrobot.bean.Answer;
 import com.byl.qrobot.bean.Msg;
+import com.byl.qrobot.bean.Music;
 import com.byl.qrobot.config.Const;
 import com.byl.qrobot.db.ChatMsgDao;
 import com.byl.qrobot.ui.ImgPreviewActivity;
@@ -43,8 +45,11 @@ import com.byl.qrobot.ui.base.BaseActivity;
 import com.byl.qrobot.util.DialogUtil;
 import com.byl.qrobot.util.ExpressionUtil;
 import com.byl.qrobot.util.LogUtil;
+import com.byl.qrobot.util.MusicPlayManager;
+import com.byl.qrobot.util.MusicSearchUtil;
 import com.byl.qrobot.util.PraseUtil;
 import com.byl.qrobot.util.PreferencesUtils;
+import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.ToastUtil;
 import com.byl.qrobot.view.ActionSheetBottomDialog;
 import com.byl.qrobot.view.DropdownListView;
@@ -79,7 +84,11 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
             tv_joke,//笑话
             tv_loc,//位置
             tv_gg,//帅哥
-            tv_mm;//美女
+            tv_mm,//美女
+            tv_music;//歌曲
+
+    private LinearLayout ll_playing;//顶部正在播放布局
+    private TextView tv_playing;
 
     //表情图标每页6列4行
     private int columns = 6;
@@ -100,6 +109,8 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
 
     FinalHttp fh;
 
+    MusicPlayManager musicPlayManager;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -107,6 +118,14 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
             switch (msg.what) {
                 case 1:
                     mLvAdapter.notifyDataSetChanged();
+                    break;
+                case 2:
+                    Music music = (Music) msg.obj;
+                    if (music == null) {
+                        changeList(Const.MSG_TYPE_TEXT, "歌曲获取失败");
+                    } else {
+                        changeList(Const.MSG_TYPE_MUSIC, music.getMusicUrl() + "," + music.getTitle() + "," + music.getDescription());
+                    }
                     break;
             }
         }
@@ -118,6 +137,7 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         initTitleBar("消息", "小Q", "", this);
+        musicPlayManager = new MusicPlayManager();
         fh = new FinalHttp();
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         sd = new SimpleDateFormat("MM-dd HH:mm");
@@ -137,7 +157,11 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
      * 初始化控件
      */
     private void initViews() {
+        ll_playing = (LinearLayout) findViewById(R.id.ll_playing);
+        tv_playing = (TextView) findViewById(R.id.tv_playing);
+
         mListView = (DropdownListView) findViewById(R.id.message_chat_listview);
+        SysUtils.setOverScrollMode(mListView);
         //表情图标
         image_face = (ImageView) findViewById(R.id.image_face);
         //更多图标
@@ -187,6 +211,7 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         tv_loc = (TextView) findViewById(R.id.tv_loc);
         tv_gg = (TextView) findViewById(R.id.tv_gg);
         tv_mm = (TextView) findViewById(R.id.tv_mm);
+        tv_music = (TextView) findViewById(R.id.tv_music);
 
         tv_weather.setOnClickListener(this);
         tv_xingzuo.setOnClickListener(this);
@@ -194,6 +219,7 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         tv_loc.setOnClickListener(this);
         tv_gg.setOnClickListener(this);
         tv_mm.setOnClickListener(this);
+        tv_music.setOnClickListener(this);
     }
 
     public void initData() {
@@ -303,6 +329,13 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
             case R.id.tv_mm:
                 sendMsgText("美女", true);
                 break;
+            case R.id.tv_music:
+                input.setText("歌曲##");
+                input.setSelection(input.getText().toString().length() - 1);
+                changeList(Const.MSG_TYPE_TEXT, "请输入歌曲#歌曲名#演唱者");
+                chat_add_container.setVisibility(View.GONE);
+                showSoftInputView(input);
+                break;
         }
     }
 
@@ -313,6 +346,10 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
      * @param content
      */
     void sendMsgText(String content, boolean isReqApi) {
+        if (content.endsWith("##")) {
+            ToastUtil.showToast(this,"输入有误");
+            return;
+        }
         Msg msg = getChatInfoTo(content, Const.MSG_TYPE_TEXT);
         msg.setMsgId(msgDao.insert(msg));
         listMsg.add(msg);
@@ -376,6 +413,13 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
     private void getFromMsg(final String msgtype, String info) {
         if (info.startsWith("星座#") && info.length() > 3) {
             getResponse(msgtype, info.split("#")[1] + "运势");
+        } else if (info.startsWith("歌曲#") && info.split("#").length == 3) {
+            String[] _info = info.split("#");
+            if(TextUtils.isEmpty(_info[1])||TextUtils.isEmpty(_info[2])){
+                ToastUtil.showToast(this,"输入有误");
+                return;
+            }
+            getMusic(_info[1], _info[2]);
         } else {
             getResponse(msgtype, info);
         }
@@ -416,6 +460,25 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
     }
 
     /**
+     * 获取音乐链接
+     *
+     * @param name
+     * @param author
+     */
+    void getMusic(final String name, final String author) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Music music = MusicSearchUtil.searchMusic(name, author);
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = music;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    /**
      * 刷新数据
      *
      * @param msgtype
@@ -451,6 +514,29 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
                 break;
             case Const.MSG_TYPE_VOICE://语音
                 break;
+            case Const.MSG_TYPE_MUSIC://音乐
+                String[] musicinfo = msg.getContent().split(",");
+                if (musicinfo.length == 3) {//音乐链接，歌曲名，作者
+                    if (TextUtils.isEmpty(msg.getBak1()) || msg.getBak1().equals("0")) {
+                        stopOldMusic();
+                        msg.setBak1("1");
+                        listMsg.remove(position);
+                        listMsg.add(position, msg);
+                        mLvAdapter.notifyDataSetChanged();
+                        playMusic(musicinfo);
+                    } else {
+                        if (musicPlayManager != null) {
+                            ll_playing.setVisibility(View.GONE);
+                            musicPlayManager.stop();
+                        }
+                        msg.setBak1("0");
+                        listMsg.remove(position);
+                        listMsg.add(position, msg);
+                        mLvAdapter.notifyDataSetChanged();
+                    }
+
+                }
+                break;
         }
     }
 
@@ -459,15 +545,61 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         Msg msg = listMsg.get(position);
         switch (msg.getType()) {
             case Const.MSG_TYPE_TEXT://文本
-                clip(msg,position);
+                clip(msg, position);
                 break;
             case Const.MSG_TYPE_IMG://图片
                 break;
             case Const.MSG_TYPE_LOCATION://位置
-                delonly(msg,position);
+            case Const.MSG_TYPE_MUSIC://音乐
+                delonly(msg, position);
                 break;
             case Const.MSG_TYPE_VOICE://语音
                 break;
+        }
+    }
+
+    /**
+     * 播放网络音乐
+     *
+     * @param musicinfo
+     */
+    void playMusic(final String[] musicinfo) {
+        ll_playing.setVisibility(View.VISIBLE);
+        tv_playing.setText("正在播放歌曲：《" + musicinfo[1] + "》—" + musicinfo[2]);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    musicPlayManager.play(musicinfo[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtil.e("音乐播放异常>>"+e.getMessage());
+                    stopOldMusic();
+                    Looper.prepare();
+                    ToastUtil.showToast(ChatActivity.this, "播放错误，请重试");
+                    Looper.loop();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 停止之前正在播放的音乐
+     */
+    void stopOldMusic() {
+        for (int i = 0; i < listMsg.size(); i++) {
+            Msg msg = listMsg.get(i);
+            if (!TextUtils.isEmpty(msg.getBak1()) && msg.getBak1().equals("1")) {
+                msg.setBak1("0");
+                listMsg.remove(i);
+                listMsg.add(i, msg);
+                mLvAdapter.notifyDataSetChanged();
+                if (musicPlayManager != null) {
+                    ll_playing.setVisibility(View.GONE);
+                    musicPlayManager.stop();
+                }
+                break;
+            }
         }
     }
 
@@ -482,7 +614,7 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
                     public void onClick(int which) {
                         ClipboardManager cmb = (ClipboardManager) ChatActivity.this.getSystemService(ChatActivity.CLIPBOARD_SERVICE);
                         cmb.setText(msg.getContent());
-                        ToastUtil.showToast(ChatActivity.this,"已复制到剪切板");
+                        ToastUtil.showToast(ChatActivity.this, "已复制到剪切板");
                     }
                 })
                 .addSheetItem("删除", ActionSheetBottomDialog.SheetItemColor.Blue, new ActionSheetBottomDialog.OnSheetItemClickListener() {
@@ -510,6 +642,12 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
                         offset = listMsg.size();
                         mLvAdapter.notifyDataSetChanged();
                         msgDao.deleteMsgById(msg.getMsgId());
+                        if (msg.getType().equals(Const.MSG_TYPE_MUSIC)) {
+                            if (musicPlayManager != null) {
+                                ll_playing.setVisibility(View.GONE);
+                                musicPlayManager.stop();
+                            }
+                        }
                     }
                 })
                 .show();
@@ -554,59 +692,6 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         mListView.setSelection(list.size());
     }
 
-    /**
-     * 接收消息记录操作广播：删除复制
-     *
-     * @author baiyuliang
-     */
-    private class MsgOperReciver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int type = intent.getIntExtra("type", 0);
-            final int position = intent.getIntExtra("position", 0);
-            if (listMsg.size() <= 0) {
-                return;
-            }
-            final Msg msg = listMsg.get(position);
-            switch (type) {
-                case 1://聊天记录操作
-                    Builder bd = new Builder(ChatActivity.this);
-                    String[] items = null;
-                    if (msg.getType().equals(Const.MSG_TYPE_TEXT)) {
-                        items = new String[]{"删除记录", "删除全部记录", "复制文字"};
-                    } else {
-                        items = new String[]{"删除记录", "删除全部记录"};
-                    }
-                    bd.setItems(items, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            switch (arg1) {
-                                case 0://删除
-                                    listMsg.remove(position);
-                                    offset = listMsg.size();
-                                    mLvAdapter.notifyDataSetChanged();
-                                    msgDao.deleteMsgById(msg.getMsgId());
-                                    break;
-//						case 1://删除全部
-//							listMsg.removeAll(listMsg);
-//							offset=listMsg.size();
-//							mLvAdapter.notifyDataSetChanged();
-//							msgDao.deleteAllMsg(YOU, I);
-//							break;
-                                case 2://复制
-                                    ClipboardManager cmb = (ClipboardManager) ChatActivity.this.getSystemService(ChatActivity.CLIPBOARD_SERVICE);
-                                    cmb.setText(msg.getContent());
-                                    Toast.makeText(getApplicationContext(), "已复制到剪切板", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        }
-                    });
-                    bd.show();
-                    break;
-            }
-
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -624,8 +709,6 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
 
     }
 
-    ;
-
     /**
      * 监听返回键
      */
@@ -638,6 +721,9 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
             } else if (chat_add_container.getVisibility() == View.VISIBLE) {
                 chat_add_container.setVisibility(View.GONE);
             } else {
+                if (musicPlayManager != null && musicPlayManager.isPlaying()) {
+                    musicPlayManager.stop();
+                }
                 finish();
             }
             return true;

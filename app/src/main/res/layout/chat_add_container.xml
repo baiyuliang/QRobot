@@ -46,14 +46,14 @@
             android:textColor="#333333" />
 
         <TextView
-            android:id="@+id/tv_loc"
+            android:id="@+id/tv_music"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:drawablePadding="10dp"
-            android:drawableTop="@drawable/ic_location"
+            android:drawableTop="@drawable/ic_sang"
             android:gravity="center"
-            android:text="位置"
+            android:text="歌曲"
             android:textColor="#333333" />
 
     </LinearLayout>
@@ -65,6 +65,17 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:weightSum="4" >
+
+        <TextView
+            android:id="@+id/tv_loc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/ic_location"
+            android:gravity="center"
+            android:text="位置"
+            android:textColor="#333333" />
 
         <TextView
             android:id="@+id/tv_gg"

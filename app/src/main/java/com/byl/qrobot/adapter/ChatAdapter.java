@@ -5,6 +5,7 @@ import net.tsz.afinal.FinalBitmap;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,11 +41,11 @@ public class ChatAdapter extends BaseAdapter {
 
     OnClickMsgListener onClickMsgListener;
 
-    public ChatAdapter(Context mContext, List<Msg> list,OnClickMsgListener onClickMsgListener) {
+    public ChatAdapter(Context mContext, List<Msg> list, OnClickMsgListener onClickMsgListener) {
         super();
         this.mContext = mContext;
         this.list = list;
-        this.onClickMsgListener=onClickMsgListener;
+        this.onClickMsgListener = onClickMsgListener;
         finalImageLoader = FinalBitmap.create(mContext);
     }
 
@@ -77,10 +78,16 @@ public class ChatAdapter extends BaseAdapter {
             //接收的消息
             hodler.fromIcon = (CircleImageView) convertView.findViewById(R.id.chatfrom_icon);//他人头像
             hodler.toIcon = (CircleImageView) convertView.findViewById(R.id.chatto_icon);//自己头像
+
             hodler.fromContainer = (LinearLayout) convertView.findViewById(R.id.chart_from_container);
             hodler.fromText = (TextView) convertView.findViewById(R.id.chatfrom_content);//文本
             hodler.fromImg = (ImageView) convertView.findViewById(R.id.chatfrom_img);//图片
             hodler.fromLocation = (ImageView) convertView.findViewById(R.id.chatfrom_location);//位置
+            hodler.ll_music = (LinearLayout) convertView.findViewById(R.id.ll_music);//音乐
+            hodler.iv_music= (ImageView) convertView.findViewById(R.id.iv_music);
+            hodler.pb_music=(ProgressBar)convertView.findViewById(R.id.pb_music);
+            hodler.tv_song_name = (TextView) convertView.findViewById(R.id.tv_song_name);//音乐名
+            hodler.tv_song_author = (TextView) convertView.findViewById(R.id.tv_song_author);//音乐作者
             hodler.progress_load = (ProgressBar) convertView.findViewById(R.id.progress_load);//ProgressBar
             //发送的消息
             hodler.toContainer = (RelativeLayout) convertView.findViewById(R.id.chart_to_container);
@@ -105,6 +112,7 @@ public class ChatAdapter extends BaseAdapter {
                 hodler.fromText.setVisibility(View.VISIBLE);//文本
                 hodler.fromImg.setVisibility(View.GONE);//图片
                 hodler.fromLocation.setVisibility(View.GONE);//位置
+                hodler.ll_music.setVisibility(View.GONE);//音乐
                 hodler.progress_load.setVisibility(View.GONE);
                 SpannableStringBuilder sb = ExpressionUtil.prase(mContext, hodler.fromText, msg.getContent());// 对内容做处理
                 hodler.fromText.setText(sb);
@@ -113,14 +121,34 @@ public class ChatAdapter extends BaseAdapter {
                 hodler.fromText.setVisibility(View.GONE);//文本
                 hodler.fromImg.setVisibility(View.VISIBLE);//图片
                 hodler.fromLocation.setVisibility(View.GONE);//位置
+                hodler.ll_music.setVisibility(View.GONE);//音乐
                 hodler.progress_load.setVisibility(View.GONE);
                 finalImageLoader.display(hodler.fromImg, msg.getContent());//加载图片
             } else if (msg.getType().equals(Const.MSG_TYPE_LOCATION)) {//位置类型
                 hodler.fromText.setVisibility(View.GONE);//文本
                 hodler.fromImg.setVisibility(View.GONE);//图片
                 hodler.fromLocation.setVisibility(View.VISIBLE);//位置
+                hodler.ll_music.setVisibility(View.GONE);//音乐
                 hodler.progress_load.setVisibility(View.GONE);
                 finalImageLoader.display(hodler.fromLocation, msg.getContent());//加载网络图片
+            } else if (msg.getType().equals(Const.MSG_TYPE_MUSIC)) {//音乐类型
+                hodler.fromText.setVisibility(View.GONE);//文本
+                hodler.fromImg.setVisibility(View.GONE);//图片
+                hodler.fromLocation.setVisibility(View.GONE);//位置
+                hodler.ll_music.setVisibility(View.VISIBLE);//音乐
+                hodler.progress_load.setVisibility(View.GONE);
+                if(!TextUtils.isEmpty(msg.getBak1())&&msg.getBak1().equals("1")){
+                    hodler.pb_music.setVisibility(View.VISIBLE);
+                    hodler.iv_music.setVisibility(View.GONE);
+                }else{
+                    hodler.pb_music.setVisibility(View.GONE);
+                    hodler.iv_music.setVisibility(View.VISIBLE);
+                }
+                String[] musicinfo = msg.getContent().split(",");
+                if (musicinfo.length==3) {//音乐链接，歌曲名，作者
+                    hodler.tv_song_name.setText(musicinfo[1]);
+                    hodler.tv_song_author.setText(musicinfo[2]);
+                }
             }
         } else {// 发送消息 to显示（目前发送消息只能发送文本类型，后期将会增加其它类型）
             hodler.toContainer.setVisibility(View.VISIBLE);
@@ -161,6 +189,9 @@ public class ChatAdapter extends BaseAdapter {
         hodler.fromLocation.setOnLongClickListener(new onLongCilck(position));
         hodler.toLocation.setOnClickListener(new onClick(position));
         hodler.toLocation.setOnLongClickListener(new onLongCilck(position));
+        //音乐
+        hodler.ll_music.setOnClickListener(new onClick(position));
+        hodler.ll_music.setOnLongClickListener(new onLongCilck(position));
 
         return convertView;
     }
@@ -173,6 +204,11 @@ public class ChatAdapter extends BaseAdapter {
         LinearLayout fromContainer;
         RelativeLayout toContainer;
         ProgressBar progress_load;
+        //音乐
+        LinearLayout ll_music;
+        ImageView iv_music;
+        ProgressBar pb_music;
+        TextView tv_song_name, tv_song_author;
     }
 
     /**
@@ -228,6 +264,7 @@ public class ChatAdapter extends BaseAdapter {
 
     public interface OnClickMsgListener {
         void click(int position);
+
         void longClick(int position);
     }
 

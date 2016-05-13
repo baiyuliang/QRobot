@@ -10,8 +10,11 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.byl.qrobot.R;
+import com.byl.qrobot.bean.Music;
 import com.byl.qrobot.config.Const;
 import com.byl.qrobot.ui.login.LoginActivity;
+import com.byl.qrobot.util.LogUtil;
+import com.byl.qrobot.util.MusicSearchUtil;
 import com.byl.qrobot.util.PreferencesUtils;
 import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.SystemBarTintManager;
@@ -40,6 +43,20 @@ public class WelcomeActivity extends Activity {
         versioncode = SysUtils.getVersionCode(this);//获得当前APP版本号
         initFile();
         initData();
+
+        //测试音乐搜索
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//               Music music= MusicSearchUtil.searchMusic("上海滩","刘德华");
+//                if(music==null){
+//                    LogUtil.e("获取音乐失败");
+//                }else{
+//                    LogUtil.e(music.getMusicUrl());
+//                    LogUtil.e(music.getHQMusicUrl());
+//                }
+//            }
+//        }).start();
     }
 
 

@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/common_ui_bg"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/common_title_layout" />
+    <include layout="@layout/common_title_layout" />
 
-    <ScrollView
+    <com.byl.qrobot.view.MyScrollView
         android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,15 +61,15 @@
                 android:id="@+id/ll_loadmore"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="#FFFFFF"
                 android:gravity="center"
-                android:visibility="gone"
-                android:background="#FFFFFF">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_loadmore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="加载更多"/>
+                    android:text="加载更多" />
 
                 <ProgressBar
                     android:id="@+id/pb_loadmore"
@@ -83,10 +79,27 @@
                     android:visibility="gone" />
 
             </LinearLayout>
-
-
         </LinearLayout>
-    </ScrollView>
+    </com.byl.qrobot.view.MyScrollView>
+
+    <ImageView
+        android:id="@+id/iv_refresh"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_home_refresh" />
+
+    <ImageView
+        android:id="@+id/iv_up"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_home_up" />
 
 
-</LinearLayout>
+</RelativeLayout>

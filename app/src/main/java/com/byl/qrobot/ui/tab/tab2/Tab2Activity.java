@@ -71,6 +71,9 @@ public class Tab2Activity extends BaseActivity {
                 case Const.MSG_TYPE_LOCATION:
                     tv_content.setText("[位置]");
                     break;
+                case Const.MSG_TYPE_MUSIC:
+                    tv_content.setText("[歌曲]");
+                    break;
             }
         }
     }
