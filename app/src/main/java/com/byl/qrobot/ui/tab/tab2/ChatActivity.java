@@ -3,13 +3,11 @@ package com.byl.qrobot.ui.tab.tab2;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog.Builder;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,19 +16,19 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.ClipboardManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.byl.qrobot.R;
 import com.byl.qrobot.adapter.ChatAdapter;
@@ -42,7 +40,6 @@ import com.byl.qrobot.config.Const;
 import com.byl.qrobot.db.ChatMsgDao;
 import com.byl.qrobot.ui.ImgPreviewActivity;
 import com.byl.qrobot.ui.base.BaseActivity;
-import com.byl.qrobot.util.DialogUtil;
 import com.byl.qrobot.util.ExpressionUtil;
 import com.byl.qrobot.util.LogUtil;
 import com.byl.qrobot.util.MusicPlayManager;
@@ -53,9 +50,21 @@ import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.ToastUtil;
 import com.byl.qrobot.view.ActionSheetBottomDialog;
 import com.byl.qrobot.view.DropdownListView;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -78,7 +87,7 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
     private LinearLayout chat_face_container, chat_add_container;
     private ImageView image_face;//表情图标
     private ImageView image_add;//更多图标
-
+    private ImageView image_voice;//语音
     private TextView tv_weather,//图片
             tv_xingzuo,//拍照
             tv_joke,//笑话
@@ -108,8 +117,16 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
     private final String to = "master";//发送者为自己
 
     FinalHttp fh;
-
     MusicPlayManager musicPlayManager;
+
+    // 语音听写对象
+    private SpeechRecognizer mIat;
+    // 语音听写UI
+    private RecognizerDialog mIatDialog;
+    // 语音合成对象
+    private SpeechSynthesizer mTts;
+
+    private HashMap<String, String> mIatResults;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -151,6 +168,19 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         initAdd();
         //初始化数据
         initData();
+        //初始化语音听写及合成部分
+        initSpeech();
+    }
+
+    private void initSpeech() {
+        mIatResults = new LinkedHashMap<>();
+        // 初始化识别对象
+        mIat = SpeechRecognizer.createRecognizer(this, mInitListener);
+        mIatDialog = new RecognizerDialog(this, mInitListener);
+        setParamIat();
+        // 初始化合成对象
+        mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
+        setParamIts();
     }
 
     /**
@@ -162,14 +192,12 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
 
         mListView = (DropdownListView) findViewById(R.id.message_chat_listview);
         SysUtils.setOverScrollMode(mListView);
-        //表情图标
-        image_face = (ImageView) findViewById(R.id.image_face);
-        //更多图标
-        image_add = (ImageView) findViewById(R.id.image_add);
-        //表情布局
-        chat_face_container = (LinearLayout) findViewById(R.id.chat_face_container);
-        //更多
-        chat_add_container = (LinearLayout) findViewById(R.id.chat_add_container);
+
+        image_face = (ImageView) findViewById(R.id.image_face); //表情图标
+        image_add = (ImageView) findViewById(R.id.image_add);//更多图标
+        image_voice = (ImageView) findViewById(R.id.image_voice);//语音
+        chat_face_container = (LinearLayout) findViewById(R.id.chat_face_container);//表情布局
+        chat_add_container = (LinearLayout) findViewById(R.id.chat_add_container);//更多
 
         mViewPager = (ViewPager) findViewById(R.id.face_viewpager);
         mViewPager.setOnPageChangeListener(new PageChange());
@@ -178,13 +206,31 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         input = (EditText) findViewById(R.id.input_sms);
         send = (TextView) findViewById(R.id.send_sms);
         input.setOnClickListener(this);
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-        //表情按钮
-        image_face.setOnClickListener(this);
-        //更多按钮
-        image_add.setOnClickListener(this);
-        // 发送
-        send.setOnClickListener(this);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    send.setVisibility(View.VISIBLE);
+                    image_voice.setVisibility(View.GONE);
+                } else {
+                    send.setVisibility(View.GONE);
+                    image_voice.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        image_face.setOnClickListener(this);//表情按钮
+        image_add.setOnClickListener(this);//更多按钮
+        image_voice.setOnClickListener(this);//语音按钮
+        send.setOnClickListener(this); // 发送
 
         mListView.setOnRefreshListenerHead(this);
         mListView.setOnTouchListener(new OnTouchListener() {
@@ -302,6 +348,11 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
                     chat_add_container.setVisibility(View.GONE);
                 }
                 break;
+            case R.id.image_voice://语音
+                // 显示听写对话框
+                mIatDialog.setListener(mRecognizerDialogListener);
+                mIatDialog.show();
+                break;
             case R.id.tv_weather:
                 sendMsgText(PreferencesUtils.getSharePreStr(this, Const.CITY) + "天气", true);
                 break;
@@ -347,7 +398,7 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
      */
     void sendMsgText(String content, boolean isReqApi) {
         if (content.endsWith("##")) {
-            ToastUtil.showToast(this,"输入有误");
+            ToastUtil.showToast(this, "输入有误");
             return;
         }
         Msg msg = getChatInfoTo(content, Const.MSG_TYPE_TEXT);
@@ -415,8 +466,8 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
             getResponse(msgtype, info.split("#")[1] + "运势");
         } else if (info.startsWith("歌曲#") && info.split("#").length == 3) {
             String[] _info = info.split("#");
-            if(TextUtils.isEmpty(_info[1])||TextUtils.isEmpty(_info[2])){
-                ToastUtil.showToast(this,"输入有误");
+            if (TextUtils.isEmpty(_info[1]) || TextUtils.isEmpty(_info[2])) {
+                ToastUtil.showToast(this, "输入有误");
                 return;
             }
             getMusic(_info[1], _info[2]);
@@ -573,7 +624,7 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
                     musicPlayManager.play(musicinfo[0]);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    LogUtil.e("音乐播放异常>>"+e.getMessage());
+                    LogUtil.e("音乐播放异常>>" + e.getMessage());
                     stopOldMusic();
                     Looper.prepare();
                     ToastUtil.showToast(ChatActivity.this, "播放错误，请重试");
@@ -603,6 +654,133 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
         }
     }
 
+    /******************************语音*********************************/
+    /**
+     * 语音听写参数设置
+     *
+     * @return
+     */
+    public void setParamIat() {
+        // 清空参数
+        mIat.setParameter(SpeechConstant.PARAMS, null);
+        // 设置听写引擎
+        mIat.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
+        // 设置返回结果格式
+        mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
+//        String lag = mSharedPreferences.getString("iat_language_preference", "mandarin");
+//        if (lag.equals("en_us")) {
+//            // 设置语言
+//            mIat.setParameter(SpeechConstant.LANGUAGE, "en_us");
+//        } else {
+        // 设置语言
+        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+        // 设置语言区域
+        mIat.setParameter(SpeechConstant.ACCENT, "zh_cn");
+//        }
+        // 设置语音前端点:静音超时时间，即用户多长时间不说话则当做超时处理
+        mIat.setParameter(SpeechConstant.VAD_BOS, "3000");
+        // 设置语音后端点:后端点静音检测时间，即用户停止说话多长时间内即认为不再输入， 自动停止录音
+        mIat.setParameter(SpeechConstant.VAD_EOS, "1000");
+        // 设置标点符号,设置为"0"返回结果无标点,设置为"1"返回结果有标点
+        mIat.setParameter(SpeechConstant.ASR_PTT, "0");
+        // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
+        // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
+        mIat.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
+        mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, Const.FILE_VOICE_CACHE + "iat.wav");
+    }
+
+    /**
+     * 语音听写初始化监听器。
+     */
+    private InitListener mInitListener = new InitListener() {
+        @Override
+        public void onInit(int code) {
+            if (code != ErrorCode.SUCCESS) {
+                ToastUtil.showToast(ChatActivity.this, "初始化失败，错误码：" + code);
+            }
+        }
+    };
+
+    /**
+     * 语音听写UI监听器
+     */
+    private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
+        public void onResult(RecognizerResult results, boolean isLast) {
+            String text = PraseUtil.parseIatResult(results.getResultString());
+            String sn = null;
+            // 读取json结果中的sn字段
+            try {
+                JSONObject resultJson = new JSONObject(results.getResultString());
+                sn = resultJson.optString("sn");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mIatResults.put(sn, text);
+            StringBuffer resultBuffer = new StringBuffer();
+            for (String key : mIatResults.keySet()) {
+                resultBuffer.append(mIatResults.get(key));
+            }
+            input.setText(resultBuffer.toString());
+            input.setSelection(input.length());
+        }
+
+        /**
+         * 识别回调错误.
+         */
+        public void onError(SpeechError error) {
+            ToastUtil.showToast(ChatActivity.this, error.getPlainDescription(true));
+        }
+
+    };
+
+    /**
+     * 语音合成参数设置
+     *
+     * @return
+     */
+    private void setParamIts() {
+        // 清空参数
+        mTts.setParameter(SpeechConstant.PARAMS, null);
+        // 根据合成引擎设置相应参数(默认 云)
+        mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
+        // 设置在线合成发音人
+        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyu");
+        //设置合成语速
+        mTts.setParameter(SpeechConstant.SPEED, "50");
+        //设置合成音调
+        mTts.setParameter(SpeechConstant.PITCH, "50");
+        //设置合成音量
+        mTts.setParameter(SpeechConstant.VOLUME, "50");
+        //设置播放器音频流类型
+        mTts.setParameter(SpeechConstant.STREAM_TYPE, "3");
+        // 设置播放合成音频打断音乐播放，默认为true
+        mTts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "true");
+
+        // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
+        // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
+        mTts.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
+        mTts.setParameter(SpeechConstant.TTS_AUDIO_PATH, Const.FILE_VOICE_CACHE + "tts.wav");
+    }
+
+    /**
+     * 语音合成初始化监听。
+     */
+    private InitListener mTtsInitListener = new InitListener() {
+        @Override
+        public void onInit(int code) {
+            if (code != ErrorCode.SUCCESS) {
+                ToastUtil.showToast(ChatActivity.this, "初始化失败,错误码：" + code);
+            } else {
+                // 初始化成功，之后可以调用startSpeaking方法
+                // 注：有的开发者在onCreate方法中创建完合成对象之后马上就调用startSpeaking进行合成，
+                // 正确的做法是将onCreate中的startSpeaking调用移至这里
+                // mTts.startSpeaking(text, mTtsListener);
+            }
+        }
+    };
+/******************************语音*********************************/
+
+
     /**
      * 带复制文本的操作
      */
@@ -615,6 +793,12 @@ public class ChatActivity extends BaseActivity implements DropdownListView.OnRef
                         ClipboardManager cmb = (ClipboardManager) ChatActivity.this.getSystemService(ChatActivity.CLIPBOARD_SERVICE);
                         cmb.setText(msg.getContent());
                         ToastUtil.showToast(ChatActivity.this, "已复制到剪切板");
+                    }
+                })
+                .addSheetItem("朗读", ActionSheetBottomDialog.SheetItemColor.Blue, new ActionSheetBottomDialog.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        mTts.startSpeaking(msg.getContent(), null);
                     }
                 })
                 .addSheetItem("删除", ActionSheetBottomDialog.SheetItemColor.Blue, new ActionSheetBottomDialog.OnSheetItemClickListener() {

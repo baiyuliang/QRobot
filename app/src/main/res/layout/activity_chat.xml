@@ -66,9 +66,9 @@
                 android:layout_toLeftOf="@+id/send_sms"
                 android:layout_toRightOf="@id/image_face"
                 android:background="@null"
+                android:hint="请输入内容"
                 android:maxLength="240"
                 android:padding="2dip"
-                android:hint="请输入内容"
                 android:singleLine="true"
                 android:textColor="#333333"
                 android:textSize="14sp" />
@@ -84,7 +84,18 @@
                 android:gravity="center"
                 android:text="发 送"
                 android:textColor="#ffffff"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/image_voice"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/btn_chat_voice_selector" />
+
         </RelativeLayout>
 
         <View
@@ -112,8 +123,8 @@
         android:background="#F85800"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_playing"

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_ui_bg"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/common_title_layout" />

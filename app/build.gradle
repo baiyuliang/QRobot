@@ -43,4 +43,5 @@ dependencies {
     compile files('libs/jsoup-1.8.1.jar')
     compile files('libs/gesture-imageview.jar')
     compile files('libs/dom4j-1.6.1.jar')
+    compile files('libs/Msc.jar')
 }

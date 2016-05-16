@@ -25,6 +25,7 @@ public class SettingActivity extends AppBaseActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
 		chatMsgDao=new ChatMsgDao(this);
+		initTitleBar("我的","设置","",this);
 		initView();
 	}
 
