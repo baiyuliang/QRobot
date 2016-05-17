@@ -44,4 +44,6 @@ dependencies {
     compile files('libs/gesture-imageview.jar')
     compile files('libs/dom4j-1.6.1.jar')
     compile files('libs/Msc.jar')
+    compile files('libs/Ad_Android_SDK.jar')
+    compile files('libs/android-query-full.0.26.7.jar')
 }

@@ -8,6 +8,12 @@ public class Const {
     public static final String FILE_VOICE_CACHE = Environment.getExternalStorageDirectory() + "/qrobot/voice/";
     public static final String FILE_DOWNLOAD = Environment.getExternalStorageDirectory() + "/qrobot/download/";
 
+    public static final String XF_VOICE_APPID="573945a6";//讯飞语音appid
+    public static final String XF_AD_APPID="573a6ddc";//讯飞广告appid
+    public static final String XF_AD_FULLSCREEN_ID="D5B0845FF3FCF739CF88AF2FB45723F5";//讯飞广告位id
+    public static final String XF_AD_BANNER_ID="78154B642F559C48E2BB53C2E46E83A3";//讯飞广告位id
+    public static final String XF_AD_BANNER2_ID="3A072782D7257046E8F13FDDCBD031EF";//讯飞广告位id
+
 
     /**
      * 登录手机号

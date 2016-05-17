@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.byl.qrobot.config.Const;
 import com.byl.qrobot.util.LogUtil;
 import com.iflytek.cloud.SpeechUtility;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -55,7 +56,7 @@ public class MyApplication extends Application {
 		super.onCreate();
 		initImageLoader(getApplicationContext());        //初始化图片加载器相关配置
 		SDKInitializer.initialize(this);	    //初始化地图相关
-		SpeechUtility.createUtility(this, "appid=573945a6");
+		SpeechUtility.createUtility(this, "appid="+ Const.XF_VOICE_APPID);
 		// 以下语句用于设置日志开关（默认开启），设置成false时关闭语音云SDK日志打印
 		// Setting.setShowLog(false);
 		LogUtil.isShowLog=true;//是否打印log

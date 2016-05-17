@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_tab2"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/common_ui_bg"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/common_title_layout" />
 
     <com.byl.qrobot.view.MyScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
         android:scrollbars="none">
 
         <LinearLayout
@@ -49,9 +48,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="主人，快来和我聊天吧~"
-                    android:singleLine="true"
                     android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="主人，快来和我聊天吧~"
                     android:textColor="#666666"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -66,4 +65,13 @@
 
         </LinearLayout>
     </com.byl.qrobot.view.MyScrollView>
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+    </LinearLayout>
+</RelativeLayout>

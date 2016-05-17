@@ -19,6 +19,11 @@ import com.byl.qrobot.util.PreferencesUtils;
 import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.SystemBarTintManager;
 import com.byl.qrobot.util.ToastUtil;
+import com.iflytek.voiceads.AdError;
+import com.iflytek.voiceads.AdKeys;
+import com.iflytek.voiceads.IFLYAdListener;
+import com.iflytek.voiceads.IFLYAdSize;
+import com.iflytek.voiceads.IFLYFullScreenAd;
 
 
 public class WelcomeActivity extends Activity {
@@ -42,21 +47,7 @@ public class WelcomeActivity extends Activity {
         }
         versioncode = SysUtils.getVersionCode(this);//获得当前APP版本号
         initFile();
-        initData();
-
-        //测试音乐搜索
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//               Music music= MusicSearchUtil.searchMusic("上海滩","刘德华");
-//                if(music==null){
-//                    LogUtil.e("获取音乐失败");
-//                }else{
-//                    LogUtil.e(music.getMusicUrl());
-//                    LogUtil.e(music.getHQMusicUrl());
-//                }
-//            }
-//        }).start();
+        initAD();
     }
 
 
@@ -71,7 +62,7 @@ public class WelcomeActivity extends Activity {
         }
     }
 
-    private void initData() {
+    private void initData(int delay_s) {
         //如果版本更新时更新了引导图，则将Const.VERSION_CODE名改变即可,没有更新则不改变
         String versionCode = PreferencesUtils.getSharePreStr(WelcomeActivity.this, Const.VERSION_CODE);
         //两种情况需要显示引导页
@@ -82,7 +73,7 @@ public class WelcomeActivity extends Activity {
             startActivity(intent);
             finish();
         } else {
-            //显示欢迎页，3秒后进入主页
+//            //显示欢迎页，3秒后进入主页
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -93,8 +84,40 @@ public class WelcomeActivity extends Activity {
                     }
                     finish();
                 }
-            }, 3000);
+            }, delay_s * 1000);
         }
+
+    }
+
+    void initAD() {
+        final IFLYFullScreenAd fullScreenAd = IFLYFullScreenAd.createFullScreenAd(this, Const.XF_AD_FULLSCREEN_ID);
+        fullScreenAd.setAdSize(IFLYAdSize.FULLSCREEN);
+        fullScreenAd.setParameter(AdKeys.SHOW_TIME_FULLSCREEN, "6000");
+        fullScreenAd.setParameter(AdKeys.DOWNLOAD_ALERT, "true");//下载广告前，提示?􄖭􁒯􀩺􀡽􀋈􁕩􃃇􁨀􂽪
+        fullScreenAd.loadAd(new IFLYAdListener() {
+            @Override
+            public void onAdReceive() {
+                fullScreenAd.showAd();
+                initData(5);
+            }
+
+            @Override
+            public void onAdFailed(AdError error) {
+                initData(3);
+            }
+
+            @Override
+            public void onAdClick() {
+            }
+
+            @Override
+            public void onAdClose() {
+            }
+
+            @Override
+            public void onAdExposure() {
+            }
+        });
 
     }
 

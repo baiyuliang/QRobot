@@ -3,6 +3,7 @@ package com.byl.qrobot.ui.tab.tab3;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.byl.qrobot.R;
@@ -13,6 +14,11 @@ import com.byl.qrobot.util.DialogUtil;
 import com.byl.qrobot.util.PreferencesUtils;
 import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.ToastUtil;
+import com.iflytek.voiceads.AdError;
+import com.iflytek.voiceads.AdKeys;
+import com.iflytek.voiceads.IFLYAdListener;
+import com.iflytek.voiceads.IFLYAdSize;
+import com.iflytek.voiceads.IFLYBannerAd;
 
 
 /**
@@ -29,7 +35,45 @@ public class Tab3Activity extends BaseActivity {
         setPadding(R.id.activity_tab3);
         initTitleBar("", "我的", "", null);
         initView();
+        initAD();
+    }
 
+    /**
+     * 横幅广告
+     */
+    private void initAD() {
+        final IFLYBannerAd bannerView = IFLYBannerAd.createBannerAd(this, Const.XF_AD_BANNER2_ID);
+        bannerView.setAdSize(IFLYAdSize.BANNER);
+        bannerView.setParameter(AdKeys.DOWNLOAD_ALERT, "true");
+        bannerView.loadAd(new IFLYAdListener() {
+            @Override
+            public void onAdReceive() {
+                bannerView.showAd();
+            }
+
+            @Override
+            public void onAdFailed(AdError adError) {
+
+            }
+
+            @Override
+            public void onAdClick() {
+
+            }
+
+            @Override
+            public void onAdClose() {
+
+            }
+
+            @Override
+            public void onAdExposure() {
+
+            }
+        });
+        LinearLayout ll_ad = (LinearLayout)findViewById(R.id.ll_ad);
+        ll_ad.removeAllViews();
+        ll_ad.addView(bannerView);
     }
 
     private void initView() {

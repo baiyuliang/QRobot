@@ -18,6 +18,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:name=".MyApplication"
@@ -40,10 +43,14 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="VX64SbPVeXjDaYFcSKxgqTmdfvuhtrsS" />
-
+        <!-- 讯飞语音-->
         <meta-data
             android:name="IFLYTEK_APPKEY"
             android:value="'573945a6'" />
+        <!-- 讯飞广告-->
+        <meta-data
+            android:name="IFLYTEK_APPKEY_AD"
+            android:value="'573a6ddc'" />
 
         <activity
             android:name=".ui.GuidActivity"
@@ -91,6 +98,13 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+
+        <!--讯飞广告-->
+        <service
+            android:name="com.iflytek.voiceads.update.DownloadService"/>
+        <activity
+            android:name="com.iflytek.voiceads.request.IFLYBrowser"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

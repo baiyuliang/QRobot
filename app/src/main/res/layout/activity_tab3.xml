@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_tab3"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/common_ui_bg"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/common_title_layout" />
 
     <com.byl.qrobot.view.MyScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
         android:scrollbars="none">
 
         <LinearLayout
@@ -67,8 +67,8 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/item_selector"
-                android:visibility="gone"
-                android:longClickable="true">
+                android:longClickable="true"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -204,4 +204,13 @@
             </RelativeLayout>
         </LinearLayout>
     </com.byl.qrobot.view.MyScrollView>
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+    </LinearLayout>
+</RelativeLayout>

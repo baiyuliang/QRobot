@@ -15,6 +15,11 @@ import com.byl.qrobot.ui.base.BaseActivity;
 import com.byl.qrobot.util.ExpressionUtil;
 import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.ToastUtil;
+import com.iflytek.voiceads.AdError;
+import com.iflytek.voiceads.AdKeys;
+import com.iflytek.voiceads.IFLYAdListener;
+import com.iflytek.voiceads.IFLYAdSize;
+import com.iflytek.voiceads.IFLYBannerAd;
 
 /**
  * 主程序
@@ -34,6 +39,45 @@ public class Tab2Activity extends BaseActivity {
         initTitleBar("", "消息", "", null);
         chatMsgDao = new ChatMsgDao(this);
         initView();
+        initAD();
+    }
+
+    /**
+     * 横幅广告
+     */
+    private void initAD() {
+        final IFLYBannerAd bannerView = IFLYBannerAd.createBannerAd(this, Const.XF_AD_BANNER_ID);
+        bannerView.setAdSize(IFLYAdSize.BANNER);
+		bannerView.setParameter(AdKeys.DOWNLOAD_ALERT, "true");
+        bannerView.loadAd(new IFLYAdListener() {
+            @Override
+            public void onAdReceive() {
+                bannerView.showAd();
+            }
+
+            @Override
+            public void onAdFailed(AdError adError) {
+
+            }
+
+            @Override
+            public void onAdClick() {
+
+            }
+
+            @Override
+            public void onAdClose() {
+
+            }
+
+            @Override
+            public void onAdExposure() {
+
+            }
+        });
+        LinearLayout ll_ad = (LinearLayout)findViewById(R.id.ll_ad);
+        ll_ad.removeAllViews();
+        ll_ad.addView(bannerView);
     }
 
     private void initView() {
