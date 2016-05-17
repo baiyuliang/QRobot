@@ -1,12 +1,8 @@
 package com.byl.qrobot.ui.login;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,17 +19,12 @@ import com.byl.qrobot.ui.MainActivity;
 import com.byl.qrobot.util.DialogUtil;
 import com.byl.qrobot.util.PreferencesUtils;
 import com.byl.qrobot.util.RegexUtil;
-import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.SystemBarTintManager;
 import com.byl.qrobot.view.LoadingDialog;
 import com.byl.qrobot.view.MyEditText;
-
-import org.json.JSONObject;
-
 /**
  * 登录
  * LoginActivity.java
- *
  * @author 白玉梁
  */
 public class LoginActivity extends Activity implements OnClickListener {

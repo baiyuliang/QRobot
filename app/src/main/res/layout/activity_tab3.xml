@@ -29,7 +29,7 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <ImageView
+                <com.byl.qrobot.view.CircleImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/head_default" />
@@ -189,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10.0dip"
-                    android:text="退出登录"
+                    android:text="退出"
                     android:textColor="@color/common_text_color"
                     android:textSize="16.0sp" />
 

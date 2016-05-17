@@ -8,47 +8,109 @@
 
     <include layout="@layout/common_title_layout" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#D0D0D0" />
+
+    <RelativeLayout
+        android:id="@+id/rl_1"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/item_selector"
+        android:longClickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="聊天记录"
+            android:textColor="@color/common_text_color"
+            android:textSize="16.0sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dip"
+            android:textColor="#FF9802"
+            android:textSize="14.0sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12.0dip"
+            android:background="@drawable/ic_arrow" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#D0D0D0" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="聊天记录"
-        android:textColor="#BEBBB4"
-        android:textSize="16sp" />
+        android:layout_margin="5dp"
+        android:text="语音相关"
+        android:textColor="#666666"
+        android:textSize="14.0sp" />
 
-    <TextView
-        android:layout_width="fill_parent"
+    <View
+        android:layout_width="match_parent"
         android:layout_height="0.1dp"
-        android:background="#DEDFE0" />
+        android:background="#D0D0D0" />
 
     <RelativeLayout
-        android:id="@+id/rl_msg_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/rl_2"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
         android:background="@drawable/item_selector"
-        android:minHeight="50dp"
-        android:padding="10dp">
+        android:longClickable="true">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="清空聊天记录"
-                android:textColor="#11ABE2"
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:layout_marginLeft="10.0dip"
+            android:text="录音语言：普通话"
+            android:textColor="@color/common_text_color"
+            android:textSize="16.0sp" />
 
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
+    <View
+        android:layout_width="match_parent"
         android:layout_height="0.1dp"
-        android:background="#DEDFE0" />
+        android:background="#D0D0D0" />
 
+    <RelativeLayout
+        android:id="@+id/rl_3"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/item_selector"
+        android:longClickable="true">
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="朗读语言：普通话"
+            android:textColor="@color/common_text_color"
+            android:textSize="16.0sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#D0D0D0" />
 </LinearLayout>

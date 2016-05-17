@@ -28,8 +28,7 @@
                 <com.byl.qrobot.view.HomeViewPaper
                     android:id="@+id/vp"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/splash_screen_b" />
+                    android:layout_height="fill_parent" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"

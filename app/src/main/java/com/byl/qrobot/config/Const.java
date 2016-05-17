@@ -13,7 +13,8 @@ public class Const {
     public static final String XF_AD_FULLSCREEN_ID="D5B0845FF3FCF739CF88AF2FB45723F5";//讯飞广告位id
     public static final String XF_AD_BANNER_ID="78154B642F559C48E2BB53C2E46E83A3";//讯飞广告位id
     public static final String XF_AD_BANNER2_ID="3A072782D7257046E8F13FDDCBD031EF";//讯飞广告位id
-
+    public final static String XF_SET_VOICE_RECORD="VOICE_RECORD";//录音语言
+    public final static String XF_SET_VOICE_READ="XF_SET_VOICE_READ";//朗读语言
 
     /**
      * 登录手机号

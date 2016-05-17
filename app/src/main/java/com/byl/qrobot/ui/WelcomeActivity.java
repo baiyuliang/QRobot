@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.byl.qrobot.R;
@@ -78,7 +79,7 @@ public class WelcomeActivity extends Activity {
                 @Override
                 public void run() {
                     if (SysUtils.isLogin(WelcomeActivity.this)) {
-                        SysUtils.startActivity(WelcomeActivity.this, MainActivity.class);//已登录进入首页
+                    SysUtils.startActivity(WelcomeActivity.this, MainActivity.class);//已登录进入首页
                     } else {
                         SysUtils.startActivity(WelcomeActivity.this, LoginActivity.class);//未登录则进入登录
                     }
@@ -103,6 +104,7 @@ public class WelcomeActivity extends Activity {
 
             @Override
             public void onAdFailed(AdError error) {
+                LogUtil.e(error.getErrorCode() + "-" + error.getErrorDescription());
                 initData(3);
             }
 

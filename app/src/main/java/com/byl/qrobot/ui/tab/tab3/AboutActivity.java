@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.byl.qrobot.R;
 import com.byl.qrobot.ui.base.AppBaseActivity;
+import com.byl.qrobot.ui.base.SlideBackActivity;
 import com.byl.qrobot.util.SysUtils;
 
 /**
@@ -18,7 +19,7 @@ import com.byl.qrobot.util.SysUtils;
  * @author 白玉梁
  * @date 2016-5-12 下午5:07:54
  */
-public class AboutActivity extends AppBaseActivity{
+public class AboutActivity extends SlideBackActivity{
 
     String appname = "";
     int version_now;//当前版本号

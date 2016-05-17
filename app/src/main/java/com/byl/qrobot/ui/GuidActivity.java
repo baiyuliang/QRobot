@@ -16,6 +16,7 @@ import com.byl.qrobot.util.PreferencesUtils;
 import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.util.SystemBarTintManager;
 import android.support.v4.view.ViewPager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -58,16 +59,20 @@ public class GuidActivity extends Activity {
 		LayoutInflater inflater = getLayoutInflater();
 		for(int i=0;i<3;i++){
 			View view=inflater.inflate(R.layout.activity_guid_item_view, null);
-			ImageView iv_guid=(ImageView) view.findViewById(R.id.iv_guid);
+			RelativeLayout rl_guid=(RelativeLayout) view.findViewById(R.id.rl_guid);
+			TextView tv_guid= (TextView) view.findViewById(R.id.tv_guid);
 			switch (i) {
 			case 0:
-				iv_guid.setImageResource(R.drawable.welcome_01);
+				tv_guid.setText("聊天 调侃 听歌");
+				rl_guid.setBackgroundResource(R.drawable.welcome_01);
 				break;
 			case 1:
-				iv_guid.setImageResource(R.drawable.welcome_02);
+				tv_guid.setText("天气 星座 笑话");
+				rl_guid.setBackgroundResource(R.drawable.welcome_02);
 				break;
 			case 2:
-				iv_guid.setImageResource(R.drawable.welcome_03);
+				tv_guid.setText("小Q 您的娱乐伴侣");
+				rl_guid.setBackgroundResource(R.drawable.welcome_03);
 				view.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {

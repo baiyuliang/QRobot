@@ -88,7 +88,9 @@
         <activity
             android:name=".ui.tab.tab3.SettingActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.tab.tab3.MsgHistoryActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.LocService"

@@ -23,7 +23,7 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <ImageView
+            <com.byl.qrobot.view.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/miniq_logo" />
