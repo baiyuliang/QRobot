@@ -4,6 +4,14 @@
 
 CSDN博客：http://blog.csdn.net/baiyuliang2013
 
+动态图加载较慢，请稍后...
+
+V1.3增加首页分类菜单，内部webview，分享等；
+
+![这里写图片描述](http://img.blog.csdn.net/20160518130602905)![这里写图片描述](http://img.blog.csdn.net/20160518130845237)
+
+![这里写图片描述](http://img.blog.csdn.net/20160518130943487)
+
 2016-05-17：增加讯飞语音设置入口，并优化封装讯飞语音相关代码！
 
 V1.2增加语音识别及合成功能：
@@ -22,15 +30,9 @@ V1.1 增加歌曲搜索功能：
 
 3.我的，1.0版本暂简单实现，设置（清空聊天记录），关于，退出等！
 
-![登录](http://img.blog.csdn.net/20160512180054428)
+![登录](http://img.blog.csdn.net/20160512180054428)![首页](http://img.blog.csdn.net/20160512180110709)![消息](http://img.blog.csdn.net/20160512180142944)![我的](http://img.blog.csdn.net/20160512180128772)
 
-![首页](http://img.blog.csdn.net/20160512180110709)
 
-![消息](http://img.blog.csdn.net/20160512180142944)
-
-![我的](http://img.blog.csdn.net/20160512180128772)
-
-动态图加载较慢，请稍后...
 
 ![演示](http://img.blog.csdn.net/20160512181129051)
 
