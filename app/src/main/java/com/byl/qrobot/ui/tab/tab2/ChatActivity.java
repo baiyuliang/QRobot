@@ -41,6 +41,7 @@ import com.byl.qrobot.db.ChatMsgDao;
 import com.byl.qrobot.speech.SpeechRecognizerUtil;
 import com.byl.qrobot.speech.SpeechSynthesizerUtil;
 import com.byl.qrobot.ui.ImgPreviewActivity;
+import com.byl.qrobot.ui.base.AppBaseActivity;
 import com.byl.qrobot.ui.base.BaseActivity;
 import com.byl.qrobot.ui.base.SlideBackActivity;
 import com.byl.qrobot.util.ExpressionUtil;
@@ -78,7 +79,7 @@ import org.json.JSONObject;
  * @weibo http://weibo.com/2611894214/profile?topnav=1&wvr=6&is_all=1
  */
 @SuppressLint("SimpleDateFormat")
-public class ChatActivity extends SlideBackActivity implements DropdownListView.OnRefreshListenerHeader, ChatAdapter.OnClickMsgListener {
+public class ChatActivity extends AppBaseActivity implements DropdownListView.OnRefreshListenerHeader, ChatAdapter.OnClickMsgListener {
     private ViewPager mViewPager;
     private LinearLayout mDotsLayout;
     private EditText input;
