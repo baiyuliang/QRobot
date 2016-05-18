@@ -189,17 +189,17 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
         imageResUrl = new ArrayList<>();
         Adv adv = new Adv();
         adv.setAdvimg("http://img0.imgtn.bdimg.com/it/u=1993054971,1265255301&fm=21&gp=0.jpg");
-        adv.setAdvhref("http://blog.csdn.net/baiyuliang2013");
+        adv.setAdvhref("http://www.mmifan.com/");
         imageResUrl.add(adv);
 
         adv = new Adv();
         adv.setAdvimg("http://img1.imgtn.bdimg.com/it/u=142510033,1541164236&fm=21&gp=0.jpg");
-        adv.setAdvhref("http://blog.csdn.net/baiyuliang2013");
+        adv.setAdvhref("http://www.mmifan.com/");
         imageResUrl.add(adv);
 
         adv = new Adv();
         adv.setAdvimg("http://img4.imgtn.bdimg.com/it/u=2339574921,1409672029&fm=21&gp=0.jpg");
-        adv.setAdvhref("http://blog.csdn.net/baiyuliang2013");
+        adv.setAdvhref("http://www.mmifan.com/");
         imageResUrl.add(adv);
     }
 
