@@ -10,7 +10,7 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 ![这里写图片描述](http://img.blog.csdn.net/20160518130602905)![这里写图片描述](http://img.blog.csdn.net/20160518130845237)
 
-![这里写图片描述](http://img.blog.csdn.net/20160518165247328) ![这里写图片描述](http://img.blog.csdn.net/20160518165259004)
+![这里写图片描述](http://img.blog.csdn.net/20160518165247328)![这里写图片描述](http://img.blog.csdn.net/20160518165259004)![这里写图片描述](http://img.blog.csdn.net/20160518171647349)
 
 **2016-05-17：增加讯飞语音设置入口，并优化封装讯飞语音相关代码！**
 
