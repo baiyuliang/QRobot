@@ -96,7 +96,7 @@ public class Const {
     /**
      * 分享
      */
-    public final static String  WX_APP_ID = "wxafd2b51a7f6d2c33";
+    public final static String  WX_APP_ID = "wx8d2b441fb6f44075";
 
     public final static String  QQ_APP_ID = "1105404732";
 
