@@ -26,7 +26,7 @@ public class QQShareUtil {
         params.putString(QQShare.SHARE_TO_QQ_TITLE, shareContent.title);
         params.putString(QQShare.SHARE_TO_QQ_SUMMARY,  shareContent.content);
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL,  shareContent.url);
-        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://pp.myapp.com/ma_icon/0/icon_10626662_1452868973/96");
+        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://img.blog.csdn.net/20160518165002438");
         params.putString(QQShare.SHARE_TO_QQ_APP_NAME, SysUtils.getAppName(context));
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE);
         mTencent.shareToQQ(context, params, iUiListener);
@@ -44,7 +44,7 @@ public class QQShareUtil {
         params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, shareContent.content);//选填
         params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, shareContent.url);//必填
         ArrayList<String> arrayList=new ArrayList<>();
-        arrayList.add("http://pp.myapp.com/ma_icon/0/icon_10626662_1452868973/96");
+        arrayList.add("http://img.blog.csdn.net/20160518165002438");
         params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, arrayList);
         mTencent.shareToQzone(context, params,iUiListener);
     }
