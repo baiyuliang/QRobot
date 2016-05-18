@@ -93,4 +93,11 @@ public class Const {
     //机器人api，注意key为本人所有，使用时请到图灵机器人官网注册http://www.tuling123.com
     public static final String ROBOT_URL="http://www.tuling123.com/openapi/api?key=8c9e460d261588a152d99853df80fcfd&info=";
 
+    /**
+     * 分享
+     */
+    public final static String  WX_APP_ID = "wxafd2b51a7f6d2c33";
+
+    public final static String  QQ_APP_ID = "1105404732";
+
 }

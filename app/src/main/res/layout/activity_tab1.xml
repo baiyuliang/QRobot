@@ -81,24 +81,29 @@
         </LinearLayout>
     </com.byl.qrobot.view.MyScrollView>
 
-    <ImageView
-        android:id="@+id/iv_refresh"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <LinearLayout
+        android:id="@+id/ll_up"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="15dp"
-        android:src="@drawable/ic_home_refresh" />
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_menu_selector"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_up" />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_up"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+
+    <com.byl.qrobot.menu.ExpandableSelector
+        android:id="@+id/es_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="15dp"
-        android:visibility="gone"
-        android:src="@drawable/ic_home_up" />
-
+        android:layout_margin="10dp" />
 
 </RelativeLayout>

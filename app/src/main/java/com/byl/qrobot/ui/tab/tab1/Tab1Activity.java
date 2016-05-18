@@ -21,6 +21,10 @@ import com.byl.qrobot.R;
 import com.byl.qrobot.bean.Adv;
 import com.byl.qrobot.bean.InfoItem;
 import com.byl.qrobot.config.Const;
+import com.byl.qrobot.menu.ExpandableItem;
+import com.byl.qrobot.menu.ExpandableSelector;
+import com.byl.qrobot.menu.OnExpandableItemClickListener;
+import com.byl.qrobot.ui.WebActivity;
 import com.byl.qrobot.util.PraseUtil;
 import com.byl.qrobot.util.StringUtil;
 import com.byl.qrobot.util.SysUtils;
@@ -49,7 +53,8 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
     TextView tv_loadmore;
     ProgressBar pb_loadmore;
     MyScrollView myScrollView;
-    ImageView iv_refresh, iv_up;
+    LinearLayout ll_up;//快速上滑
+    ExpandableSelector es_menu;//菜单
 
     CirclePageIndicator indicator;
     private List<View> imageViews; // 滑动的图片集合
@@ -81,13 +86,13 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab1);
-        initTitleBar("", "首页", "", null);
+        initTitleBar("", "资讯", "", null);
         fh = new FinalHttp();
         mInflater = LayoutInflater.from(this);
         initView();
         initData();
         initViewPager(imageResUrl);
-        getNews(Const.TYPE_MOBILE, false);
+        getNews(Const.TYPE_NEWS, false);
     }
 
     /**
@@ -105,10 +110,45 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
         myScrollView = (MyScrollView) findViewById(R.id.myScrollView);
         SysUtils.setOverScrollMode(myScrollView);
         myScrollView.setOnScrollChangeListener(this);
-        iv_refresh = (ImageView) findViewById(R.id.iv_refresh);//刷新
-        iv_up = (ImageView) findViewById(R.id.iv_up);//上滑
-        iv_refresh.setOnClickListener(this);
-        iv_up.setOnClickListener(this);
+        ll_up = (LinearLayout) findViewById(R.id.ll_up);//上滑
+        ll_up.setOnClickListener(this);
+
+        initializeSizesExpandableSelector();
+    }
+
+    /**
+     * 初始化菜单
+     */
+    private void initializeSizesExpandableSelector() {
+        es_menu = (ExpandableSelector) findViewById(R.id.es_menu);
+        List<ExpandableItem> expandableItems = new ArrayList<>();
+        expandableItems.add(new ExpandableItem("业界", Const.TYPE_NEWS));
+        expandableItems.add(new ExpandableItem("移动", Const.TYPE_MOBILE));
+        expandableItems.add(new ExpandableItem("云", Const.TYPE_CLOUD));
+        expandableItems.add(new ExpandableItem("软件", Const.TYPE_SD));
+        es_menu.showExpandableItems(expandableItems);
+        es_menu.setOnExpandableItemClickListener(new OnExpandableItemClickListener() {
+            @Override
+            public void onExpandableItemClickListener(int index, View view) {
+                final ExpandableItem item = es_menu.getExpandableItem(index);
+                swipeFirstItem(index, item);
+                if(index!=0){
+                    new Handler().postDelayed(new Runnable() {//延时300ms执行，否则会卡顿
+                        @Override
+                        public void run() {
+                            getNews(item.getType(), false);
+                        }
+                    },300);
+                }
+                es_menu.collapse();
+            }
+
+            private void swipeFirstItem(int position, ExpandableItem clickedItem) {
+                ExpandableItem firstItem = es_menu.getExpandableItem(0);
+                es_menu.updateExpandableItem(0, clickedItem);
+                es_menu.updateExpandableItem(position, firstItem);
+            }
+        });
     }
 
     @Override
@@ -119,23 +159,26 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
                     getNews(Const.TYPE_MOBILE, true);
                 }
                 break;
-            case R.id.iv_refresh:
+            case R.id.es_menu:
                 getNews(Const.TYPE_MOBILE, false);
                 break;
-            case R.id.iv_up:
-                myScrollView.smoothScrollTo(0,0);
+            case R.id.ll_up:
+                myScrollView.smoothScrollTo(0, 0);
                 break;
         }
     }
 
     @Override
     public void onScrollChanged(int l, int t, int oldl, int oldt) {
+        if(es_menu.isExpanded()){
+            es_menu.collapse();
+        }
         if (t < 600) {
-            iv_refresh.setVisibility(View.VISIBLE);
-            iv_up.setVisibility(View.GONE);
+            es_menu.setVisibility(View.VISIBLE);
+            ll_up.setVisibility(View.GONE);
         } else {
-            iv_refresh.setVisibility(View.GONE);
-            iv_up.setVisibility(View.VISIBLE);
+            es_menu.setVisibility(View.GONE);
+            ll_up.setVisibility(View.VISIBLE);
         }
     }
 
@@ -146,6 +189,7 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
         imageResUrl = new ArrayList<>();
         Adv adv = new Adv();
         adv.setAdvimg("http://img0.imgtn.bdimg.com/it/u=1993054971,1265255301&fm=21&gp=0.jpg");
+        adv.setAdvhref("http://blog.csdn.net/baiyuliang2013");
         imageResUrl.add(adv);
 
         adv = new Adv();
@@ -178,9 +222,9 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
                     @Override
                     public void onClick(View v) {
                         if (!TextUtils.isEmpty(adv.getAdvhref())) {
-                            Uri uri = Uri.parse(adv.getAdvhref());
-                            Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(it);
+                            Bundle b=new Bundle();
+                            b.putString("url",adv.getAdvhref());
+                            SysUtils.startActivity(getParent(), WebActivity.class,b);
                         }
                     }
                 });
@@ -205,16 +249,17 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
     }
 
     /**
+     * infoType 信息类别
      * 获取网络数据
      */
-    private void getNews(int infoType, final boolean isLoadMore) {
-        LogUtil.e("url>>" + URLUtil.getUrl(infoType, page));
+    private void getNews(final int infoType, final boolean isLoadMore) {
         if (!isLoadMore) {
-            page=1;
+            page = 1;
             pb.setVisibility(View.VISIBLE);//显示标题栏处的progress
         } else {
             loadMoreStart();
         }
+        LogUtil.e("url>>" + URLUtil.getUrl(infoType, page));
         fh.get(URLUtil.getUrl(infoType, page++), new AjaxCallBack<Object>() {
             @Override
             public void onSuccess(Object o) {
@@ -222,7 +267,7 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
                 pb.setVisibility(View.GONE);
                 LogUtil.e("获取数据成功");
                 String result = (String) o;
-                listInfoItem = PraseUtil.getInfosItems(Const.TYPE_MOBILE, result);
+                listInfoItem = PraseUtil.getInfosItems(infoType, result);
                 if (!isLoadMore) {//首次加载/或刷新
                     ll_news.removeAllViews();
                     if (listInfoItem.size() <= 0) {
@@ -281,9 +326,9 @@ public class Tab1Activity extends BaseActivity implements MyScrollView.OnScrollC
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(infoItem.getLink())) {
-                    Uri uri = Uri.parse(infoItem.getLink());
-                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(it);
+                    Bundle b=new Bundle();
+                    b.putString("url",infoItem.getLink());
+                    SysUtils.startActivity(getParent(), WebActivity.class,b);
                 }
             }
         });

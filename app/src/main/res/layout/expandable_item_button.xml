@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="RequiredSize"
+    android:layout_height="60dp"
+    android:layout_width="60dp"
+    android:textSize="14sp"
+    android:textColor="#FFFFFF"
+    android:background="@drawable/btn_menu_selector" />
