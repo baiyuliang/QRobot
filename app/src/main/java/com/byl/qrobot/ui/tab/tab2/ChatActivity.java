@@ -585,9 +585,10 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
                 startActivity(intent);
                 break;
             case Const.MSG_TYPE_VOICE://语音
+
                 break;
             case Const.MSG_TYPE_MUSIC://音乐
-                String[] musicinfo = msg.getContent().split(",");
+                String[] musicinfo = msg.getContent().split(Const.SPILT);
                 if (musicinfo.length == 3) {//音乐链接，歌曲名，作者
                     if (TextUtils.isEmpty(msg.getBak1()) || msg.getBak1().equals("0")) {
                         stopOldMusic();
