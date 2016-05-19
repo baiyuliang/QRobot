@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F0F0F0"
+    android:orientation="vertical"
+    android:padding="10dip">
+
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="09-25 12:00"
+        android:textColor="#999999"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_time"
+        android:layout_marginTop="5dp"
+        android:background="@color/transparent"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <com.byl.qrobot.view.CircleImageView
+            android:id="@+id/head_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/miniq_logo" />
+
+        <LinearLayout
+            android:id="@+id/ll_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chatfrom_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#DDDDDD"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_music"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_music" />
+
+                <ProgressBar
+                    android:id="@+id/pb_music"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:indeterminateDrawable="@drawable/music_playing"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="20dp"
+                    android:text="上海滩"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_song_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="刘德华"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

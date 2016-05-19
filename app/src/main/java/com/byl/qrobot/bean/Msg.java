@@ -19,7 +19,7 @@ public class Msg implements Serializable {
 	private String date;//时间
 	private String isReaded;//是否已读
 	
-	private String bak1;//扩展1
+	private String bak1;//扩展1 //音乐是否正在播放 0未播放 1正在播放
 	private String bak2;//扩展2
 	private String bak3;//扩展3
 	private String bak4;//扩展4

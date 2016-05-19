@@ -48,6 +48,7 @@
             android:background="@drawable/ic_arrow" />
     </RelativeLayout>
 
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
@@ -108,6 +109,82 @@
             android:textSize="16.0sp" />
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#D0D0D0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="录音设置"
+        android:textColor="#666666"
+        android:textSize="14.0sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#D0D0D0" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rb_voice"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/item_selector"
+            android:checked="true"
+            android:text="录音以语音形式发送"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#D0D0D0" />
+
+        <RadioButton
+            android:id="@+id/rb_text"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/item_selector"
+            android:text="录音以文字形式发送"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#D0D0D0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="朗读设置"
+        android:textColor="#666666"
+        android:textSize="14.0sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#D0D0D0" />
+
+    <CheckBox
+        android:id="@+id/cb_speech"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/item_selector"
+        android:text="回复内容直接朗读"
+        android:textColor="#000000"
+        android:textSize="14sp" />
 
     <View
         android:layout_width="match_parent"

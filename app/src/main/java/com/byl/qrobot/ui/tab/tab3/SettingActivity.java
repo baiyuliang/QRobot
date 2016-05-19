@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ import com.byl.qrobot.view.ActionSheetCenterDialog;
 public class SettingActivity extends SlideBackActivity {
     private RelativeLayout rl_1, rl_2, rl_3;
     TextView tv_1, tv_2;
+    RadioButton rb_voice, rb_text;
+    CheckBox cb_speech;
 
     ActionSheetCenterDialog actionSheetCenterDialog1, actionSheetCenterDialog2;
 
@@ -44,9 +48,16 @@ public class SettingActivity extends SlideBackActivity {
         tv_1 = (TextView) findViewById(R.id.tv_1);
         tv_2 = (TextView) findViewById(R.id.tv_2);
 
+        rb_voice = (RadioButton) findViewById(R.id.rb_voice);
+        rb_text = (RadioButton) findViewById(R.id.rb_text);
+        cb_speech= (CheckBox) findViewById(R.id.cb_speech);
+
         rl_1.setOnClickListener(this);
         rl_2.setOnClickListener(this);
         rl_3.setOnClickListener(this);
+        rb_voice.setOnClickListener(this);
+        rb_text.setOnClickListener(this);
+        cb_speech.setOnClickListener(this);
     }
 
     private void initData() {
@@ -55,12 +66,12 @@ public class SettingActivity extends SlideBackActivity {
         if (TextUtils.isEmpty(str1)) {
             tv_1.setText("录音语言：mandarin");
         } else {
-            tv_1.setText("录音语言："+str1);
+            tv_1.setText("录音语言：" + str1);
         }
         if (TextUtils.isEmpty(str2)) {
             tv_2.setText("朗读语言：xiaoyu");
         } else {
-            tv_2.setText("朗读语言："+str2);
+            tv_2.setText("朗读语言：" + str2);
         }
     }
 
@@ -92,6 +103,19 @@ public class SettingActivity extends SlideBackActivity {
                         .addSheetItem("xiaokun(男河南话)", ActionSheetCenterDialog.SheetItemColor.Blue, onSheetItemClickListener2);
                 actionSheetCenterDialog2.show();
                 break;
+            case R.id.rb_voice:
+                PreferencesUtils.putSharePre(this, Const.IM_VOICE_TPPE, "1");//以语音形式发送
+                break;
+            case R.id.rb_text:
+                PreferencesUtils.putSharePre(this, Const.IM_VOICE_TPPE, "2");//已文本形式发送
+                break;
+            case R.id.cb_speech:
+                if(cb_speech.isChecked()){
+                    PreferencesUtils.putSharePre(this, Const.IM_SPEECH_TPPE, "1");//回复内容直接朗读
+                }else{
+                    PreferencesUtils.putSharePre(this, Const.IM_SPEECH_TPPE, "0");
+                }
+                break;
         }
     }
 
@@ -101,19 +125,19 @@ public class SettingActivity extends SlideBackActivity {
             switch (which) {
                 case 1:
                     tv_1.setText("录音语言：mandarin");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_RECORD,"mandarin");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_RECORD, "mandarin");
                     break;
                 case 2:
                     tv_1.setText("录音语言：cantonese");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_RECORD,"cantonese");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_RECORD, "cantonese");
                     break;
                 case 3:
                     tv_1.setText("录音语言：henanese");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_RECORD,"henanese");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_RECORD, "henanese");
                     break;
                 case 4:
                     tv_1.setText("录音语言：en_us");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_RECORD,"en_us");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_RECORD, "en_us");
                     break;
             }
         }
@@ -125,27 +149,27 @@ public class SettingActivity extends SlideBackActivity {
             switch (which) {
                 case 1:
                     tv_2.setText("朗读语言：xiaoyu");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_READ,"xiaoyu");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_READ, "xiaoyu");
                     break;
                 case 2:
                     tv_2.setText("朗读语言：xiaoyan");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_READ,"xiaoyan");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_READ, "xiaoyan");
                     break;
                 case 3:
                     tv_2.setText("朗读语言：xiaomei");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_READ,"xiaomei");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_READ, "xiaomei");
                     break;
                 case 4:
                     tv_2.setText("朗读语言：xiaolin");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_READ,"xiaolin");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_READ, "xiaolin");
                     break;
                 case 5:
                     tv_2.setText("朗读语言：xiaorong");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_READ,"xiaorong");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_READ, "xiaorong");
                     break;
                 case 6:
                     tv_2.setText("朗读语言：xiaokun");
-                    PreferencesUtils.putSharePre(SettingActivity.this,Const.XF_SET_VOICE_READ,"xiaokun");
+                    PreferencesUtils.putSharePre(SettingActivity.this, Const.XF_SET_VOICE_READ, "xiaokun");
                     break;
             }
         }

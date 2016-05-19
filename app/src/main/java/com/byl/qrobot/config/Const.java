@@ -16,6 +16,9 @@ public class Const {
     public final static String XF_SET_VOICE_RECORD="VOICE_RECORD";//录音语言
     public final static String XF_SET_VOICE_READ="XF_SET_VOICE_READ";//朗读语言
 
+    public final static String IM_VOICE_TPPE="IM_VOICE_TPPE";//语音聊天形式
+    public final static String IM_SPEECH_TPPE="IM_SPEECH_TPPE";//聊天回复是否直接朗读
+
     /**
      * 登录手机号
      */
@@ -99,5 +102,10 @@ public class Const {
     public final static String  WX_APP_ID = "wx8d2b441fb6f44075";
 
     public final static String  QQ_APP_ID = "1105404732";
+
+    /**
+     * 分隔符
+     */
+    public final static String  SPILT = "☆";
 
 }

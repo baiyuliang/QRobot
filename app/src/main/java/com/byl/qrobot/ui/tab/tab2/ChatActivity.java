@@ -79,7 +79,8 @@ import org.json.JSONObject;
  * @weibo http://weibo.com/2611894214/profile?topnav=1&wvr=6&is_all=1
  */
 @SuppressLint("SimpleDateFormat")
-public class ChatActivity extends AppBaseActivity implements DropdownListView.OnRefreshListenerHeader, ChatAdapter.OnClickMsgListener {
+public class ChatActivity extends AppBaseActivity implements DropdownListView.OnRefreshListenerHeader,
+        ChatAdapter.OnClickMsgListener, SpeechRecognizerUtil.RecoListener {
     private ViewPager mViewPager;
     private LinearLayout mDotsLayout;
     private EditText input;
@@ -129,6 +130,8 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
     // 语音合成工具
     SpeechSynthesizerUtil speechSynthesizerUtil;
 
+    String voice_type;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -142,7 +145,7 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
                     if (music == null) {
                         changeList(Const.MSG_TYPE_TEXT, "歌曲获取失败");
                     } else {
-                        changeList(Const.MSG_TYPE_MUSIC, music.getMusicUrl() + "," + music.getTitle() + "," + music.getDescription());
+                        changeList(Const.MSG_TYPE_MUSIC, music.getMusicUrl() + Const.SPILT + music.getTitle() + Const.SPILT + music.getDescription());
                     }
                     break;
             }
@@ -161,6 +164,7 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
         sd = new SimpleDateFormat("MM-dd HH:mm");
         msgDao = new ChatMsgDao(this);
         staticFacesList = ExpressionUtil.initStaticFaces(this);
+        voice_type = PreferencesUtils.getSharePreStr(this, Const.IM_VOICE_TPPE);
         //初始化控件
         initViews();
         //初始化表情
@@ -174,8 +178,9 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
     }
 
     private void initSpeech() {
-        speechRecognizerUtil=new SpeechRecognizerUtil(this);
-        speechSynthesizerUtil=new SpeechSynthesizerUtil(this);
+        speechRecognizerUtil = new SpeechRecognizerUtil(this);
+        speechRecognizerUtil.setRecoListener(this);
+        speechSynthesizerUtil = new SpeechSynthesizerUtil(this);
     }
 
     /**
@@ -344,7 +349,11 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
                 }
                 break;
             case R.id.image_voice://点击语音按钮
-                speechRecognizerUtil.say(input);
+                if (!TextUtils.isEmpty(voice_type) && voice_type.equals("1")) {//以语音形式发送
+                    speechRecognizerUtil.say(input, false);
+                } else {//以文本形式发送
+                    speechRecognizerUtil.say(input, true);
+                }
                 break;
             case R.id.tv_weather:
                 sendMsgText(PreferencesUtils.getSharePreStr(this, Const.CITY) + "天气", true);
@@ -376,7 +385,7 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
             case R.id.tv_music:
                 input.setText("歌曲##");
                 input.setSelection(input.getText().toString().length() - 1);
-                changeList(Const.MSG_TYPE_TEXT, "请输入歌曲#歌曲名#演唱者");
+                changeList(Const.MSG_TYPE_TEXT, "请输入：歌曲#歌曲名#演唱者");
                 chat_add_container.setVisibility(View.GONE);
                 showSoftInputView(input);
                 break;
@@ -401,7 +410,6 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
         mLvAdapter.notifyDataSetChanged();
         input.setText("");
         if (isReqApi) getFromMsg(Const.MSG_TYPE_TEXT, content);
-
     }
 
     /**
@@ -427,7 +435,21 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
         listMsg.add(msg);
         offset = listMsg.size();
         mLvAdapter.notifyDataSetChanged();
+    }
 
+    /**
+     * 发送语音
+     *
+     * @param content
+     */
+    void sendMsgVoice(String content) {
+        String[] _content = content.split(Const.SPILT);
+        Msg msg = getChatInfoTo(content, Const.MSG_TYPE_VOICE);
+        msg.setMsgId(msgDao.insert(msg));
+        listMsg.add(msg);
+        offset = listMsg.size();
+        mLvAdapter.notifyDataSetChanged();
+        getFromMsg(Const.MSG_TYPE_TEXT, _content[1]);
     }
 
     /**
@@ -476,7 +498,7 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
      * @param info
      */
     void getResponse(final String msgtype, String info) {
-        fh.get(Const.ROBOT_URL + info, new AjaxCallBack<Object>() {
+        fh.get(Const.ROBOT_URL + info.replace("#", ""), new AjaxCallBack<Object>() {
             @Override
             public void onSuccess(Object o) {
                 super.onSuccess(o);
@@ -540,6 +562,12 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
         listMsg.add(msg);
         offset = listMsg.size();
         mLvAdapter.notifyDataSetChanged();
+        if (msg.getType().equals(Const.MSG_TYPE_TEXT)) {
+            String speech_type = PreferencesUtils.getSharePreStr(this, Const.IM_SPEECH_TPPE);
+            if (!TextUtils.isEmpty(speech_type) && speech_type.equals("1")) {
+                speechSynthesizerUtil.speech(msg.getContent());
+            }
+        }
 
     }
 
@@ -595,9 +623,8 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
                 break;
             case Const.MSG_TYPE_LOCATION://位置
             case Const.MSG_TYPE_MUSIC://音乐
-                delonly(msg, position);
-                break;
             case Const.MSG_TYPE_VOICE://语音
+                delonly(msg, position);
                 break;
         }
     }
@@ -704,6 +731,20 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
     }
 
     /**
+     * 录音完毕
+     * text 录音转文字后的内容
+     */
+    @Override
+    public void recoComplete(String text) {
+        String voicepath = Const.FILE_VOICE_CACHE + System.currentTimeMillis() + ".wav";
+        if (SysUtils.copyFile(Const.FILE_VOICE_CACHE + "iat.wav", voicepath)) {
+            sendMsgVoice(voicepath + Const.SPILT + text);
+        } else {
+            ToastUtil.showToast(this, "录音失败");
+        }
+    }
+
+    /**
      * 表情页改变时，dots效果也要跟着改变
      */
     class PageChange implements OnPageChangeListener {
@@ -773,6 +814,9 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
             } else {
                 if (musicPlayManager != null && musicPlayManager.isPlaying()) {
                     musicPlayManager.stop();
+                }
+                if (speechSynthesizerUtil != null) {
+                    speechSynthesizerUtil.stopSpeech();
                 }
                 finish();
             }

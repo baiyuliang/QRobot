@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F0F0F0"
+    android:orientation="vertical"
+    android:padding="10dip">
+
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="09-25 12:00"
+        android:textColor="#999999"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_time"
+        android:layout_marginTop="5dp">
+
+        <com.byl.qrobot.view.CircleImageView
+            android:id="@+id/head_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/head_default" />
+
+        <LinearLayout
+            android:id="@+id/layout_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@id/head_view"
+            android:background="@drawable/chatto_bg"
+            android:gravity="right|center_vertical"
+            android:minHeight="45dp"
+            android:minWidth="80dp"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp">
+
+            <ImageView
+                android:id="@+id/iv_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/voice_left3" />
+
+            <TextView
+                android:id="@+id/tv_fy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_fy"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/layout_voice"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/layout_voice"
+            android:src="@drawable/ic_fy" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -39,6 +39,10 @@ public class SpeechRecognizerUtil {
 
     EditText editText;
 
+    RecoListener recoListener;
+
+    boolean isShowInEditText;
+
     public SpeechRecognizerUtil(Activity context) {
         this.context = context;
         // 初始化识别对象
@@ -50,10 +54,12 @@ public class SpeechRecognizerUtil {
 
     /**
      * 录音
-     * @param editText
+     *
+     * @param editText isShowInEditText 录音完成后是否将文本显示在编辑框中
      */
-    public void say(EditText editText) {
-        this.editText=editText;
+    public void say(EditText editText, boolean isShowInEditText) {
+        this.editText = editText;
+        this.isShowInEditText = isShowInEditText;
         mIatDialog.setListener(mRecognizerDialogListener);
         mIatDialog.show();
     }
@@ -71,11 +77,11 @@ public class SpeechRecognizerUtil {
         // 设置返回结果格式
         mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
         // 设置语言
-        String l= PreferencesUtils.getSharePreStr(context,Const.XF_SET_VOICE_RECORD);
-        if(TextUtils.isEmpty(l)){//默认中文普通话
+        String l = PreferencesUtils.getSharePreStr(context, Const.XF_SET_VOICE_RECORD);
+        if (TextUtils.isEmpty(l)) {//默认中文普通话
             mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
             mIat.setParameter(SpeechConstant.ACCENT, "mandarin");
-        }else{
+        } else {
             if (l.equals("en_us")) {
                 mIat.setParameter(SpeechConstant.LANGUAGE, "en_us");
             } else {
@@ -129,9 +135,12 @@ public class SpeechRecognizerUtil {
             for (String key : mIatResults.keySet()) {
                 resultBuffer.append(mIatResults.get(key));
             }
-            if(editText!=null){
+            if (isShowInEditText && editText != null) {
                 editText.setText(resultBuffer.toString());
                 editText.setSelection(editText.length());
+            }
+            if (!isShowInEditText&&isLast && recoListener != null) {
+                recoListener.recoComplete(resultBuffer.toString());
             }
         }
 
@@ -143,5 +152,14 @@ public class SpeechRecognizerUtil {
         }
 
     };
+
+    public void setRecoListener(RecoListener recoListener) {
+        this.recoListener = recoListener;
+    }
+
+
+    public interface RecoListener {
+        void recoComplete(String text);
+    }
 
 }

@@ -31,6 +31,11 @@ public class SpeechSynthesizerUtil {
             mTts.startSpeaking(content, null);
     }
 
+    public void stopSpeech() {
+        if (mTts!=null)
+            mTts.stopSpeaking();
+    }
+
     /**
      * 语音合成参数设置
      *
@@ -53,7 +58,7 @@ public class SpeechSynthesizerUtil {
         //设置合成音调
         mTts.setParameter(SpeechConstant.PITCH, "50");
         //设置合成音量
-        mTts.setParameter(SpeechConstant.VOLUME, "50");
+        mTts.setParameter(SpeechConstant.VOLUME, "100");
         //设置播放器音频流类型
         mTts.setParameter(SpeechConstant.STREAM_TYPE, "3");
         // 设置播放合成音频打断音乐播放，默认为true

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F0F0F0"
+    android:orientation="vertical"
+    android:padding="10dip">
+
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="09-25 12:00"
+        android:textColor="#999999"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/chat_time"
+        android:layout_marginTop="5dp"
+        android:background="@color/transparent">
+
+        <com.byl.qrobot.view.CircleImageView
+            android:id="@+id/head_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/head_default" />
+
+        <ImageView
+            android:id="@+id/iv_location"
+            android:layout_width="200dp"
+            android:layout_height="120dp"
+            android:layout_toLeftOf="@+id/head_view"
+            android:background="@drawable/chatto_bg"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/location_default" />
+    </RelativeLayout>
+</RelativeLayout>
