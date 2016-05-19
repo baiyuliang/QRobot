@@ -108,7 +108,8 @@
         <service android:name="com.iflytek.voiceads.update.DownloadService" />
         <activity
             android:name="com.iflytek.voiceads.request.IFLYBrowser"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
         <!-- QQ分享 -->
         <activity
