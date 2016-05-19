@@ -6,6 +6,10 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 动态图加载较慢，请稍后...
 
+**V1.4增加语音聊天及语音翻译及相关设置；**
+
+![这里写图片描述](http://img.blog.csdn.net/20160519150322237)
+
 **V1.3更换logo，增加首页分类菜单，内部webview，分享等；**
 
 ![这里写图片描述](http://img.blog.csdn.net/20160518130602905)![这里写图片描述](http://img.blog.csdn.net/20160518130845237)
