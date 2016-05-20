@@ -2,6 +2,8 @@ package com.byl.qrobot.ui;
 
 
 import com.byl.qrobot.R;
+import com.byl.qrobot.config.Const;
+import com.byl.qrobot.util.PreferencesUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -27,6 +29,7 @@ public class ImgPreviewActivity extends Activity{
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	DisplayImageOptions options;
 	String url;
+	TextView tv_address;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +55,8 @@ public class ImgPreviewActivity extends Activity{
 		img=(GestureImageView) findViewById(R.id.img);
 		loading_progress= (RelativeLayout)findViewById(R.id.loading_progress);
 		loadingText=(TextView) findViewById(R.id.loadingText);
+		tv_address=(TextView) findViewById(R.id.tv_address);
+		tv_address.setText(PreferencesUtils.getSharePreStr(this, Const.ADDRESS));
 	}
 	
 	private void initData() {
