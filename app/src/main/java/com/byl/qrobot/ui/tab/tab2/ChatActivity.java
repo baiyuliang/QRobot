@@ -66,6 +66,7 @@ import com.iflytek.cloud.ui.RecognizerDialogListener;
 
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -122,6 +123,7 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
     private final String to = "master";//发送者为自己
 
     FinalHttp fh;
+    AjaxParams ajaxParams;
 
     //在线音乐播放工具类
     MusicPlayManager musicPlayManager;
@@ -498,7 +500,10 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
      * @param info
      */
     void getResponse(final String msgtype, String info) {
-        fh.get(Const.ROBOT_URL + info.replace("#", ""), new AjaxCallBack<Object>() {
+        ajaxParams=new AjaxParams();
+        ajaxParams.put("key",Const.ROBOT_KEY);
+        ajaxParams.put("info",info);
+        fh.post(Const.ROBOT_URL,ajaxParams, new AjaxCallBack<Object>() {
             @Override
             public void onSuccess(Object o) {
                 super.onSuccess(o);
@@ -507,14 +512,24 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
                 String responeContent;
                 if (answer == null) {
                     responeContent = "网络错误";
+                    changeList(msgtype, responeContent);
                 } else {
-                    if (!TextUtils.isEmpty(answer.getUrl())) {
-                        responeContent = answer.getText() + answer.getUrl();
-                    } else {
-                        responeContent = answer.getText();
+                    switch (answer.getCode()) {
+                        case "100000"://文本
+                            responeContent = answer.getText();
+                            changeList(msgtype, responeContent);
+                            break;
+                        case "200000"://链接
+                            responeContent = answer.getText() + answer.getUrl();
+                            changeList(msgtype, responeContent);
+                            break;
+                        case "302000"://新闻
+                        case "308000"://菜谱
+                            responeContent=answer.getJsoninfo();
+                            changeList(Const.MSG_TYPE_LIST, responeContent);
+                            break;
                     }
                 }
-                changeList(msgtype, responeContent);
             }
 
             @Override
@@ -625,6 +640,7 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
             case Const.MSG_TYPE_LOCATION://位置
             case Const.MSG_TYPE_MUSIC://音乐
             case Const.MSG_TYPE_VOICE://语音
+            case Const.MSG_TYPE_LIST://列表
                 delonly(msg, position);
                 break;
         }

@@ -4,22 +4,30 @@ import java.util.List;
 
 import net.tsz.afinal.FinalBitmap;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byl.qrobot.R;
+import com.byl.qrobot.bean.Answer;
+import com.byl.qrobot.bean.Cook;
 import com.byl.qrobot.bean.Msg;
+import com.byl.qrobot.bean.News;
 import com.byl.qrobot.config.Const;
 import com.byl.qrobot.listener.RecordPlayClickListener;
+import com.byl.qrobot.ui.WebActivity;
 import com.byl.qrobot.util.ExpressionUtil;
-import com.byl.qrobot.util.PreferencesUtils;
+import com.byl.qrobot.util.PraseUtil;
+import com.byl.qrobot.util.SysUtils;
 import com.byl.qrobot.view.CircleImageView;
 
 
@@ -45,9 +53,10 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
     private final int TYPE_RECEIVER_VOICE = 7;
     //音乐
     private final int TYPE_RECEIVER_MUSIC = 8;
+    //新闻，菜谱等列表类信息
+    private final int TYPE_RECEIVER_LIST = 9;
 
     private FinalBitmap finalImageLoader;
-    AnimationDrawable anim;
     OnClickMsgListener onClickMsgListener;
 
     public ChatAdapter(Context context, List<Msg> msgList, OnClickMsgListener onClickMsgListener) {
@@ -72,6 +81,8 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
                 return msg.getIsComing() == 0 ? TYPE_RECEIVER_VOICE : TYPE_SEND_VOICE;
             case Const.MSG_TYPE_MUSIC:
                 return TYPE_RECEIVER_MUSIC;
+            case Const.MSG_TYPE_LIST:
+                return TYPE_RECEIVER_LIST;
             default:
                 return -1;
         }
@@ -79,7 +90,7 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
 
     @Override
     public int getViewTypeCount() {
-        return 9;
+        return 10;
     }
 
     /**
@@ -101,6 +112,8 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
                 return getItemViewType(position) == TYPE_RECEIVER_VOICE ? createView(R.layout.item_chat_voice_rece) : createView(R.layout.item_chat_voice_sent);
             case Const.MSG_TYPE_MUSIC://音乐
                 return createView(R.layout.item_chat_music_rece);
+            case Const.MSG_TYPE_LIST://列表
+                return createView(R.layout.item_chat_news_rece);
             default:
                 return null;
         }
@@ -134,11 +147,16 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
         TextView tv_song_name = (TextView) convertView.findViewById(R.id.tv_song_name);//音乐名
         TextView tv_song_author = (TextView) convertView.findViewById(R.id.tv_song_author);//音乐作者
 
+        LinearLayout ll_news_list = (LinearLayout) convertView.findViewById(R.id.ll_news_list);
+        ImageView iv_news_top_img = (ImageView) convertView.findViewById(R.id.iv_news_top_img);
+        TextView tv_news_top_title = (TextView) convertView.findViewById(R.id.tv_news_top_title);
+
         chat_time.setText(msg.getDate());//时间
 
         switch (msg.getType()) {
             case Const.MSG_TYPE_TEXT://文本
-                tv_text.setText(ExpressionUtil.prase(mContext,tv_text,msg.getContent()));
+                tv_text.setText(ExpressionUtil.prase(mContext, tv_text, msg.getContent()));
+                Linkify.addLinks(tv_text, Linkify.ALL);
                 tv_text.setOnClickListener(new onClick(position));
                 tv_text.setOnLongClickListener(new onLongCilck(position));
                 break;
@@ -162,7 +180,7 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
                     public void onClick(View v) {
                         if (tv_fy.getVisibility() == View.GONE) {
                             tv_fy.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             tv_fy.setVisibility(View.GONE);
                         }
                     }
@@ -185,10 +203,17 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
                 ll_music.setOnClickListener(new onClick(position));
                 ll_music.setOnLongClickListener(new onLongCilck(position));
                 break;
+            case Const.MSG_TYPE_LIST://列表 (注意，正常情况下，应判断list是否为空等异常情况)
+                Answer answer = PraseUtil.praseMsgText(msg.getContent());
+                viewList(ll_news_list,iv_news_top_img,tv_news_top_title,answer);
+                iv_news_top_img.setOnLongClickListener(new onLongCilck(position));
+                break;
         }
 
         return convertView;
     }
+
+
 
     /**
      * 屏蔽listitem的所有事件
@@ -201,6 +226,105 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
     @Override
     public boolean isEnabled(int position) {
         return false;
+    }
+
+
+    /**
+     * 列表类型
+     * @param ll_news_list
+     * @param iv_news_top_img
+     * @param tv_news_top_title
+     * @param answer
+     */
+    private void viewList(LinearLayout ll_news_list,ImageView iv_news_top_img,TextView tv_news_top_title,Answer answer) {
+        switch (answer.getCode()) {
+            case "302000"://新闻
+                List<News> listNews = answer.getListNews();
+                final News news = listNews.get(0);
+                if (TextUtils.isEmpty(news.getIcon())) {
+                    iv_news_top_img.setImageResource(R.drawable.splash_screen_b);
+                }else{
+                    finalImageLoader.display(iv_news_top_img,news.getIcon());
+                }
+                iv_news_top_img.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle b=new Bundle();
+                        b.putString("url",news.getDetailurl());
+                        SysUtils.startActivity((Activity) mContext, WebActivity.class,b);
+                    }
+                });
+                ll_news_list.removeAllViews();
+                for(int i=1;i<4;i++){
+                    ll_news_list.addView(createNewsView(listNews.get(i)));
+                }
+                tv_news_top_title.setText(news.getArticle());
+                break;
+            case "308000"://菜谱
+                List<Cook> listCook = answer.getListCook();
+                final Cook cook = listCook.get(0);
+                if (TextUtils.isEmpty(cook.getIcon())) {
+                    iv_news_top_img.setImageResource(R.drawable.splash_screen_b);
+                }else{
+                    finalImageLoader.display(iv_news_top_img,cook.getIcon());
+                }
+                iv_news_top_img.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle b=new Bundle();
+                        b.putString("url",cook.getDetailurl());
+                        SysUtils.startActivity((Activity) mContext, WebActivity.class,b);
+                    }
+                });
+                ll_news_list.removeAllViews();
+                for(int i=1;i<4;i++){
+                    ll_news_list.addView(createCookView(listCook.get(i)));
+                }
+                tv_news_top_title.setText(cook.getInfo());
+                break;
+        }
+    }
+
+    View createNewsView(final News news){
+        View view =mInflater.inflate(R.layout.item_list,null);
+        ImageView iv= (ImageView) view.findViewById(R.id.iv);
+        TextView tv= (TextView) view.findViewById(R.id.tv);
+        if (TextUtils.isEmpty(news.getIcon())) {
+            iv.setImageResource(R.drawable.splash_screen_b);
+        }else{
+            finalImageLoader.display(iv,news.getIcon());
+        }
+        tv.setText(news.getArticle());
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b=new Bundle();
+                b.putString("url",news.getDetailurl());
+                SysUtils.startActivity((Activity) mContext, WebActivity.class,b);
+            }
+        });
+        return view;
+    }
+
+    View createCookView(final Cook cook){
+        View view =mInflater.inflate(R.layout.item_list,null);
+        ImageView iv= (ImageView) view.findViewById(R.id.iv);
+        TextView tv= (TextView) view.findViewById(R.id.tv);
+        if (TextUtils.isEmpty(cook.getIcon())) {
+            iv.setImageResource(R.drawable.splash_screen_b);
+        }else{
+            finalImageLoader.display(iv,cook.getIcon());
+        }
+        tv.setText(cook.getInfo());
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b=new Bundle();
+                b.putString("url",cook.getDetailurl());
+                SysUtils.startActivity((Activity) mContext, WebActivity.class,b);
+            }
+        });
+        return view;
     }
 
     /**

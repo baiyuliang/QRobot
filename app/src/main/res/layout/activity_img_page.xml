@@ -36,4 +36,15 @@
             android:textSize="10sp" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="beijing"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
 </RelativeLayout>

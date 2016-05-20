@@ -1,5 +1,7 @@
 package com.byl.qrobot.bean;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -18,6 +20,7 @@ public class Msg implements Serializable {
 	private int isComing;//0表接收的消息，1表发送的消息
 	private String date;//时间
 	private String isReaded;//是否已读
+	private String jsoninfo;//
 	
 	private String bak1;//扩展1 //音乐是否正在播放 0未播放 1正在播放
 	private String bak2;//扩展2
@@ -113,6 +116,12 @@ public class Msg implements Serializable {
 	public void setIsReaded(String isReaded) {
 		this.isReaded = isReaded;
 	}
-	 
-	
+
+	public String getJsoninfo() {
+		return jsoninfo;
+	}
+
+	public void setJsoninfo(String jsoninfo) {
+		this.jsoninfo = jsoninfo;
+	}
 }

@@ -15,11 +15,12 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.byl.qrobot.R;
+import com.byl.qrobot.ui.base.AppBaseActivity;
 import com.byl.qrobot.ui.base.SlideBackActivity;
 import com.byl.qrobot.util.LogUtil;
 import com.byl.qrobot.view.ProgressWebView;
 
-public class WebActivity extends SlideBackActivity implements OnClickListener, ProgressWebView.OnWebTitleChangedListener {
+public class WebActivity extends AppBaseActivity implements OnClickListener, ProgressWebView.OnWebTitleChangedListener {
     private ProgressWebView webview;
     private String url = "";
     ProgressBar pb;
@@ -28,7 +29,7 @@ public class WebActivity extends SlideBackActivity implements OnClickListener, P
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        initTitleBar("资讯", "", "", this);
+        initTitleBar("返回", "", "", this);
         Bundle b = getIntent().getBundleExtra("b");
         url = b.getString("url");
         LogUtil.e(url);
