@@ -18,6 +18,7 @@ import com.byl.qrobot.R;
 import com.byl.qrobot.bean.Msg;
 import com.byl.qrobot.config.Const;
 import com.byl.qrobot.listener.RecordPlayClickListener;
+import com.byl.qrobot.util.ExpressionUtil;
 import com.byl.qrobot.util.PreferencesUtils;
 import com.byl.qrobot.view.CircleImageView;
 
@@ -137,7 +138,7 @@ public class ChatAdapter extends BaseListAdapter<Msg> {
 
         switch (msg.getType()) {
             case Const.MSG_TYPE_TEXT://文本
-                tv_text.setText(msg.getContent());
+                tv_text.setText(ExpressionUtil.prase(mContext,tv_text,msg.getContent()));
                 tv_text.setOnClickListener(new onClick(position));
                 tv_text.setOnLongClickListener(new onLongCilck(position));
                 break;
