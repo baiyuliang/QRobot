@@ -73,6 +73,18 @@ public class SettingActivity extends SlideBackActivity {
         } else {
             tv_2.setText("朗读语言：" + str2);
         }
+        String str3 = PreferencesUtils.getSharePreStr(this, Const.IM_VOICE_TPPE);
+        String str4 = PreferencesUtils.getSharePreStr(this, Const.IM_SPEECH_TPPE);
+        if(!TextUtils.isEmpty(str3)&&str3.equals("1")){
+            rb_voice.setChecked(true);
+        }else{
+            rb_text.setChecked(true);
+        }
+        if(!TextUtils.isEmpty(str4)&&str4.equals("1")){
+            cb_speech.setChecked(true);
+        }else{
+            cb_speech.setChecked(false);
+        }
     }
 
     @Override
