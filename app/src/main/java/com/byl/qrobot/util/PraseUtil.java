@@ -150,6 +150,10 @@ public class PraseUtil {
             //因为本人的key使用的是上线项目《聊天小公主》中的key，机器人名称被本人设定为了“小公主”，因此需要替换一下（个人重新申请的key不用替换）
             answer.setText(jsonObject.optString("text").replace("小公主", "小Q"));
             switch (answer.getCode()) {
+                case "40001"://参数key错误
+                case "40002"://请求内容info为空
+                case "40004"://当天请求次数已使用完
+                case "40007"://数据格式异常
                 case "100000":
                     //因text 字段 各类型都会返回，answer.setText已做处理，因此这里不做处理
                     break;

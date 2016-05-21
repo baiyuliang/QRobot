@@ -515,6 +515,10 @@ public class ChatActivity extends AppBaseActivity implements DropdownListView.On
                     changeList(msgtype, responeContent);
                 } else {
                     switch (answer.getCode()) {
+                        case "40001"://参数key错误
+                        case "40002"://请求内容info为空
+                        case "40004"://当天请求次数已使用完
+                        case "40007"://数据格式异常
                         case "100000"://文本
                             responeContent = answer.getText();
                             changeList(msgtype, responeContent);
