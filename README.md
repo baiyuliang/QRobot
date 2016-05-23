@@ -8,7 +8,9 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 **应用市场线上版体验：**
 
-apk安装包：[下载地址](http://openbox.mobilem.360.cn/index/d/sid/3282870)
+apk安装包：[点我下载](http://openbox.mobilem.360.cn/index/d/sid/3282870)
+
+![扫码下载](http://img.blog.csdn.net/20160523131833662)
 
 **360**
 应用地址：http://zhushou.360.cn/detail/index/soft_id/3282870
