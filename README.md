@@ -14,8 +14,10 @@ apk安装包：[点我下载](http://openbox.mobilem.360.cn/index/d/sid/3282870)
 
 **360**
 360应用地址：http://zhushou.360.cn/detail/index/soft_id/3282870
+
 **应用宝**
 应用宝应用地址：http://android.myapp.com/myapp/detail.htm?apkName=com.byl.qrobot
+
 **百度**
 百度应用地址：http://shouji.baidu.com/software/9428526.html
 
