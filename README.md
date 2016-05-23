@@ -6,6 +6,13 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 **注意：发送消息后如果小Q没回答，或回答“亲爱的，当天请求次数已用完”，表示当天的api调用次数已经超过限制次数，大家可以自己申请apikey用于测试！（音乐和位置功能不受影响）**
 
+**应用市场线上版体验：**
+
+apk安装包：[下载地址](http://openbox.mobilem.360.cn/index/d/sid/3282870)
+
+**360**
+应用地址：http://zhushou.360.cn/detail/index/soft_id/3282870
+
 动态图加载较慢，请稍后...
 
 **V1.5增加新闻，菜谱等列表信息功能；**
