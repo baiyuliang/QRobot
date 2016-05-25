@@ -6,6 +6,9 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 **注意：发送消息后如果小Q没回答，或回答“亲爱的，当天请求次数已用完”，表示当天的api调用次数已经超过限制次数，大家可以自己申请apikey用于测试！（音乐和位置功能不受影响）**
 
+**另：对于音乐失效问题，可参考本人此篇博客，更换搜索方法：**
+[http://blog.csdn.net/baiyuliang2013/article/details/51496620](http://blog.csdn.net/baiyuliang2013/article/details/51496620)
+
 **应用市场线上版体验：**
 
 apk安装包：[点我下载](http://dd.myapp.com/16891/AC889B9DF01530A1FAFB672A157E2CEC.apk?fsname=com.byl.qrobot_1.6_9.apk)
