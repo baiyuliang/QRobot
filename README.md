@@ -11,9 +11,9 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 **应用市场线上版体验：**
 
-apk安装包：[点我下载](http://dd.myapp.com/16891/AC889B9DF01530A1FAFB672A157E2CEC.apk?fsname=com.byl.qrobot_1.6_9.apk)
+apk安装包：[点我下载](http://openbox.mobilem.360.cn/index/d/sid/3282870)
 
-![扫码下载](http://img.blog.csdn.net/20160524112800301)
+![扫码下载](http://img.blog.csdn.net/20160601164742841)
 
 **360**
 360应用地址：http://zhushou.360.cn/detail/index/soft_id/3282870
