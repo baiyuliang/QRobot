@@ -22,7 +22,7 @@ apk安装包：[点我下载](http://openbox.mobilem.360.cn/index/d/sid/3282870)
 应用宝应用地址：http://android.myapp.com/myapp/detail.htm?apkName=com.byl.qrobot
 
 **百度**
-百度应用地址：http://shouji.baidu.com/software/9428526.html
+百度应用地址：http://shouji.baidu.com/software/11267364.html
 
 动态图加载较慢，请稍后...
 
