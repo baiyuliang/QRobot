@@ -6,7 +6,8 @@
 
 $\color{red}{目前线上版《小Q聊天机器人》与另一款聊天软件下载注册用户量达到百万级，如有投资或收购需求，请联系本人！}$
 
-$\color{#376956}{cyan-blue}$
+
+<font color=gray size=72>color=gray</font>
 
 CSDN博客：http://blog.csdn.net/baiyuliang2013
 
