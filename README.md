@@ -16,6 +16,8 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 apk安装包：[点我下载](http://openbox.mobilem.360.cn/index/d/sid/3282870)
 
+> ***目前线上版《小Q聊天机器人》与另一款聊天软件下载注册用户量达到百万级，如有投资或收购需求，请联系本人！***
+
 ![扫码下载](http://img.blog.csdn.net/20160601164742841)
 
 **360**
