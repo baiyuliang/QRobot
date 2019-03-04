@@ -4,6 +4,8 @@
 
 小Q聊天机器人
 
+<font color=#ff0000 size=5 face="黑体">目前线上版《小Q聊天机器人》与另一款聊天软件下载注册用户量达到百万级，如有投资或收购需求，请联系本人！</font>
+
 CSDN博客：http://blog.csdn.net/baiyuliang2013
 
 **注意：发送消息后如果小Q没回答，或回答“亲爱的，当天请求次数已用完”，表示当天的api调用次数已经超过限制次数，大家可以自己申请apikey用于测试！（音乐和位置功能不受影响）**
@@ -63,7 +65,5 @@ apk安装包：[点我下载](http://openbox.mobilem.360.cn/index/d/sid/3282870)
 ![登录](http://img.blog.csdn.net/20160512180054428)![首页](http://img.blog.csdn.net/20160512180110709)![消息](http://img.blog.csdn.net/20160512180142944)![我的](http://img.blog.csdn.net/20160512180128772)
 
 ![演示](http://img.blog.csdn.net/20160512181129051)
-
-持续更新...
 
 CSDN博客：http://blog.csdn.net/baiyuliang2013
