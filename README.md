@@ -12,23 +12,6 @@ CSDN博客：http://blog.csdn.net/baiyuliang2013
 **另：对于音乐失效问题，可参考本人此篇博客，更换搜索方法：**
 [http://blog.csdn.net/baiyuliang2013/article/details/51496620](http://blog.csdn.net/baiyuliang2013/article/details/51496620)
 
-**应用市场线上版体验：**
-
-apk安装包：[点我下载](http://openbox.mobilem.360.cn/index/d/sid/3282870)
-
-> ***目前线上版《小Q聊天机器人》与另一款聊天软件下载注册用户量达到百万级，如有投资或收购需求，请联系本人！***
-
-![扫码下载](http://img.blog.csdn.net/20160601164742841)
-
-**360**
-360应用地址：http://zhushou.360.cn/detail/index/soft_id/3282870
-
-**应用宝**
-应用宝应用地址：http://android.myapp.com/myapp/detail.htm?apkName=com.byl.qrobot
-
-**百度**
-百度应用地址：http://shouji.baidu.com/software/11267364.html
-
 动态图加载较慢，请稍后...
 
 **V1.5增加新闻，菜谱等列表信息功能；**
